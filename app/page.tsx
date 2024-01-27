@@ -2,6 +2,7 @@ import ResponsiveAppBar from "@/components/Navbar";
 import CompanyAlbum from "@/components/_home/company.album";
 import JobsAlbum from "@/components/_home/jobs-album";
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
+import Company from "./(nav)/company/page";
 
 export default function Home() {
   return (

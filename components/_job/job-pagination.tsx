@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Card,
   CardActionArea,
@@ -8,8 +10,9 @@ import {
   Typography,
 } from "@mui/material";
 import { CiLocationOn } from "react-icons/ci";
+import Stack from "@mui/material/Stack";
 
-export default function JobsAlbum(props: any) {
+export default function JobPagination(props: any) {
   const post = {
     title: "Junier developer react nest node",
     location: "Hanoi",
@@ -25,11 +28,8 @@ export default function JobsAlbum(props: any) {
 
   const posts = [post, post2];
   return (
-    <>
-      <Typography className="mb-3" variant="h5" sx={{ fontWeight: "bold" }}>
-        Top company
-      </Typography>
-      <Grid container spacing={4} className="mb-3">
+    <div className="">
+      <Grid container spacing={4} className="mb-9">
         {posts.map((post, index) => (
           <Grid item xs={12} md={6}>
             <CardActionArea component="a" href="#">
@@ -70,6 +70,9 @@ export default function JobsAlbum(props: any) {
           </Grid>
         ))}
       </Grid>
-    </>
+      <Stack alignItems="center">
+        <Pagination count={10} variant="outlined" color="primary" />
+      </Stack>
+    </div>
   );
 }

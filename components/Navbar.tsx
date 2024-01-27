@@ -15,7 +15,8 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import Link from "next/link";
 
-const pages = ["Home", "IT job", "Top company IT"];
+const pages = [["Home",""], ["IT job","job"], ["Top company IT", 'company']];
+
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function ResponsiveAppBar() {
@@ -101,8 +102,8 @@ function ResponsiveAppBar() {
                 }}
               >
                 {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">{page}</Typography>
+                  <MenuItem key={page[1]} onClick={handleCloseNavMenu}>
+                    <Typography textAlign="center">{page[1]}</Typography>
                   </MenuItem>
                 ))}
               </Menu>
@@ -129,11 +130,11 @@ function ResponsiveAppBar() {
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {pages.map((page) => (
                 <Button
-                  key={page}
+                  key={page[1]}
                   onClick={handleCloseNavMenu}
                   sx={{ my: 2, color: "white", display: "block" }}
                 >
-                  <Link href={`/${page.toLowerCase()}`}>{page}</Link>
+                  <Link href={`/${page[1].toLowerCase()}`}>{page[0]}</Link>
                 </Button>
               ))}
             </Box>

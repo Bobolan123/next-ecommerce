@@ -1,7 +1,5 @@
 import {
-  Button,
   Card,
-  CardActions,
   CardContent,
   CardMedia,
   Grid,
@@ -10,25 +8,26 @@ import {
 import Link from "next/link";
 
 export default function CompanyAlbum(props: any) {
-  const cards = [1, 2, 3];
+  const cards = [1, 2, 3, 4];
 
   return (
     <div className="mb-20">
       <Typography className="mb-3" variant="h4">
         Top company
       </Typography>
-      <Grid container spacing={4}>
+      <Grid container spacing={4} justifyContent="center">
         {cards.map((card) => (
-          <Grid item key={card} xs={12} sm={6} md={4}>
+          <Grid item key={card} md={3}>
             <Card
               sx={{ height: "100%", display: "flex", flexDirection: "column" }}
             >
-              <Link href="/">
+              <Link href="/" >
                 <CardMedia
                   component="div"
                   sx={{
                     // 16:9
                     pt: "56.25%",
+                    height:200,
                   }}
                   image="https://source.unsplash.com/random?wallpapers"
                 />
