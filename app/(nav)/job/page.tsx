@@ -1,5 +1,5 @@
 import JobsAlbum from "@/components/_home/jobs-album";
-import JobPagination from "@/components/_job/job-pagination";
+import JobPagination from "@/components/_job/Job-pagination";
 import { Box, Button, Pagination, TextField, Typography } from "@mui/material";
 
 export default function Job() {

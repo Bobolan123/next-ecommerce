@@ -13,13 +13,13 @@ export default function JobsAlbum(props: any) {
   const post = {
     title: "Junier developer react nest node",
     location: "Hanoi",
-    price: "1220 $",
+    salary: "1220 $",
     image: "https://source.unsplash.com/random?wallpapers",
   };
   const post2 = {
     title: "lan",
     location: "Hanoi",
-    price: "adf",
+    salary: "adf",
     image: "https://source.unsplash.com/random?wallpapers",
   };
 
@@ -55,7 +55,7 @@ export default function JobsAlbum(props: any) {
                     {post.location}
                   </Typography>
                   <Typography variant="subtitle1" color="primary" paragraph>
-                    {post.price}
+                    {post.salary}
                   </Typography>
                   <Typography
                     variant="subtitle1"

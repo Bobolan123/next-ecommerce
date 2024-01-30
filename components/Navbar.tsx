@@ -14,12 +14,23 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+import { useState } from "react";
 
-const pages = [["Home",""], ["IT job","job"], ["Top company IT", 'company']];
+const NoSSR = dynamic(() => import("./_profile/modelProfile/ModelProfile"), { ssr: false });
 
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const pages = [
+  ["Home", ""],
+  ["IT jobs", "job"],
+  ["Top IT company", "company"],
+];
+
+const settings = ["Profile", "Dashboard", "Logout"];
 
 function ResponsiveAppBar() {
+  const [openProfile, setOpenProfile] = useState(false);
+
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -43,13 +54,22 @@ function ResponsiveAppBar() {
   };
 
   const handleLogOut = (titleProfile: string) => {
+    if (titleProfile === "Profile") {
+      setOpenProfile(true)
+    }
+
+    if (titleProfile === "Dashboard") {
+    }
     if (titleProfile === "Logout") {
+      
     }
   };
 
-  
-
+  const handlePopDownProfile = () => {
+    setOpenProfile(false)
+  }
   return (
+    <div>
       <AppBar position="static">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
@@ -175,6 +195,9 @@ function ResponsiveAppBar() {
           </Toolbar>
         </Container>
       </AppBar>
+
+      <NoSSR openProfile = {openProfile} handlePopDownProfile ={handlePopDownProfile}/>  {/* Model profile */}
+    </div>
   );
 }
 export default ResponsiveAppBar;
