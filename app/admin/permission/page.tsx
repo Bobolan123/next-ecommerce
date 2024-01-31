@@ -1,14 +1,27 @@
 "use client";
 
 import * as React from "react";
+import { styled } from "@mui/material/styles";
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import { useState } from "react";
-import RoleTable from "@/components/_admin/role/roleTable";
 import { Button, Container, TextField } from "@mui/material";
+import CompanyTable from "@/components/_admin/company/companyTable";
+import { useState } from "react";
+import dynamic from "next/dynamic";
 
-export default function Company() {
+const PermissionModel = dynamic(
+  () => import("../../../components/_admin/permission/permissionModel"),
+  { ssr: false }
+);
+
+export default function Permission() {
+  const [isOpenPermissionModel, setIsOpenPermissionModel] = useState(false);
+
+  const handlePermissionModel = () => {
+    setIsOpenPermissionModel(!isOpenPermissionModel);
+  };
   return (
     <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
       <Grid container spacing={3}>
@@ -27,15 +40,15 @@ export default function Company() {
               className="ml-3 mr-5"
               size="small"
               id="outlined-basic"
-              label="job name"
+              label="company name"
               variant="outlined"
             />
-            Salary:{" "}
+            Address:{" "}
             <TextField
               className="ml-3"
               size="small"
               id="outlined-basic"
-              label="salary"
+              label="location"
               variant="outlined"
             />
             <Button variant="contained" size="small">
@@ -48,10 +61,17 @@ export default function Company() {
           <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
             <div className="flex justify-between mb-5">
               <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-                List of Jobs
+                List of companies
               </Typography>
+              <Button variant="contained" onClick={handlePermissionModel}>
+                Add
+              </Button>
             </div>
-            <RoleTable />
+            <PermissionModel
+              isOpenPermissionModel={isOpenPermissionModel}
+              handlePermissionModel={handlePermissionModel}
+            />
+            <CompanyTable />
           </Paper>
         </Grid>
       </Grid>

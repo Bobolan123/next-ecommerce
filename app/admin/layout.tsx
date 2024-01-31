@@ -153,44 +153,7 @@ export default function Layout({
             }}
           >
             <Toolbar />
-
-            <Container maxWidth="xl" sx={{ mt: 4, mb: 4}}>
-              <Grid container spacing={3}>
-                {/* Chart */}
-                <Grid item xs={12}>
-                  <Paper
-                    sx={{
-                      gap: 1,
-                      p: 2,
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    Name:{" "}
-                    <TextField
-                      className="ml-3 mr-5"
-                      size="small"
-                      id="outlined-basic"
-                      label="company name"
-                      variant="outlined"
-                    />
-                    Address:{" "}
-                    <TextField
-                      className="ml-3"
-                      size="small"
-                      id="outlined-basic"
-                      label="location"
-                      variant="outlined"
-                    />
-                    <Button variant="contained" size="small">
-                      Search
-                    </Button>
-                  </Paper>
-                </Grid> 
-                {/* Recent Orders */}
-                {children}
-              </Grid>
-            </Container>
+            {children}
           </Box>
         </Box>
       </ThemeProvider>

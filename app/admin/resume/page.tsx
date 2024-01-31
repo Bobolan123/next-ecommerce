@@ -1,14 +1,28 @@
 "use client";
 
 import * as React from "react";
+import { styled } from "@mui/material/styles";
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import { useState } from "react";
-import RoleTable from "@/components/_admin/role/roleTable";
 import { Button, Container, TextField } from "@mui/material";
+import { useState } from "react";
+import dynamic from "next/dynamic";
+import ResumeTable from "@/components/_admin/resume/resumeTable";
+
+
+const ResumeModel = dynamic(
+  () => import("../../../components/_admin/resume/resumeModel"),
+  { ssr: false }
+);
 
 export default function Company() {
+  const [isOpenResumeModel, setIsOpenResumeModel] = useState(false);
+
+  const handleResumeModel = () => {
+    setIsOpenResumeModel(!isOpenResumeModel);
+  };
   return (
     <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
       <Grid container spacing={3}>
@@ -27,15 +41,15 @@ export default function Company() {
               className="ml-3 mr-5"
               size="small"
               id="outlined-basic"
-              label="job name"
+              label="company name"
               variant="outlined"
             />
-            Salary:{" "}
+            Address:{" "}
             <TextField
               className="ml-3"
               size="small"
               id="outlined-basic"
-              label="salary"
+              label="location"
               variant="outlined"
             />
             <Button variant="contained" size="small">
@@ -48,10 +62,17 @@ export default function Company() {
           <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
             <div className="flex justify-between mb-5">
               <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-                List of Jobs
+                List of Resumes
               </Typography>
+              <Button variant="contained" onClick={handleResumeModel}>
+                Add
+              </Button>
             </div>
-            <RoleTable />
+            <ResumeModel
+              isOpenResumeModel={isOpenResumeModel}
+              handleResumeModel={handleResumeModel}
+            />
+            <ResumeTable/>
           </Paper>
         </Grid>
       </Grid>
