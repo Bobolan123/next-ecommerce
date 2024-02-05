@@ -57,7 +57,7 @@ export default async function SpecificJob(props: any) {
           </Typography>
           <hr />
           <Typography
-            component="h1"
+            component="h1"  
             variant="h3"
             style={{ overflowWrap: "break-word" }}
           >
