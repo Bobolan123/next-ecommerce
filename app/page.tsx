@@ -2,11 +2,20 @@ import ResponsiveAppBar from "@/components/Navbar";
 import CompanyAlbum from "@/components/_home/company.album";
 import JobsAlbum from "@/components/_home/jobs-album";
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
-import Company from "./(nav)/company/page";
-import ModelProfile from "@/components/_profile/modelProfile/ModelProfile";
-export default function Home() {
+
+export default async function Home() {
+  const fetchCompanies = await fetch(`${process.env.API}/company/read`, {
+    method:"GET"
+  })
+  const companies = await fetchCompanies.json()
+
+  const fetchJobs = await fetch(`${process.env.API}/job/readAll/`, {
+    method:"GET"
+  })
+  const jobs = await fetchJobs.json()
+  console.log(jobs)
   return (
-    <>
+    <>  
       <ResponsiveAppBar />
       <Container className="mt-5">
         <Typography className="mb-3" variant="h5" sx={{ fontWeight: "bold" }}>
@@ -38,9 +47,9 @@ export default function Home() {
           </Button>
         </Box>
         <div className="align-middle">
-          <CompanyAlbum/>
-          <JobsAlbum/>
-        </div>
+          <CompanyAlbum companies = {companies}/>
+          <JobsAlbum jobs ={jobs}/>
+        </div> 
       </Container>
     </>
   );

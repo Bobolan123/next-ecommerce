@@ -1,61 +1,59 @@
-"use client";
-
 import * as React from "react";
-import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { CardMedia } from "@mui/material";
 import { CiDollar } from "react-icons/ci";
 import { CiLocationOn } from "react-icons/ci";
 import { CiClock1 } from "react-icons/ci";
-import { useState } from "react";
-import ShowModel from "@/components/_job/specificJob/ShowModel";
+import ApplyButton from "@/components/_job/specificJob/apply.button";
 
-const post = {
-  title: "Junier developer react nest node",
-  location: "Hanoi",
-  salary: "1220 $",
-  image: "https://source.unsplash.com/random?wallpapers",
-  company: "Tiki",
-  date: "10 days",
-};
+function calculateTimeLeft(created_at:any) {
+  const createdAtDate = new Date(created_at) as any;
+  const currentDate = new Date() as any;
+  const timeDifference = createdAtDate - currentDate;
+  const daysDifference = Math.abs(Math.ceil(timeDifference / (1000 * 60 * 60 * 24)));
+  const hoursDifference = Math.abs(Math.ceil(timeDifference / (1000 * 60 * 60)));
+  const minutesDifference = Math.abs(Math.ceil(timeDifference / (1000 * 60)));
 
-export default function SpecificJob(props: any) {
+  return { daysDifference, hoursDifference, minutesDifference };
+}
+
+export default async function SpecificJob(props: any) {
   const { params } = props;
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const fetchJob = await fetch(`${process.env.API}/job/readJob/${params.id}`);
+  const job = await fetchJob.json();
 
-  const showModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
+  const { daysDifference, hoursDifference, minutesDifference } = calculateTimeLeft(job.created_at);
+  let timeLeft;
 
+  if (daysDifference > 0) {
+    timeLeft = `${daysDifference} day${daysDifference > 1 ? 's' : ''} ago`;
+  } else if (hoursDifference > 0) {
+    timeLeft = `${hoursDifference} hour${hoursDifference > 1 ? 's' : ''} ago`;
+  } else {
+    timeLeft = `${minutesDifference} minute${minutesDifference > 1 ? 's' : ''} ago`;
+  }  
   return (
     <>
       <Grid container component="main" rowGap={3} spacing={2}>
         <Grid item xs={12} sm={9} md={9}>
           <Typography component="h1" variant="h5">
-            {post.title}
+            {job.name}
           </Typography>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            className="mb-10"
-            onClick={() => showModal()}
-          >
-            Apply now
-          </Button>
+
+          <ApplyButton />
+
           <Typography variant="subtitle1">
             <CiDollar className="inline mr-1" />
-            {post.salary}
+            {job.salary}
           </Typography>
           <Typography variant="subtitle1">
             <CiLocationOn className="inline mr-1" />
-            {post.title}
+            {job.company.location}
           </Typography>
           <Typography className="mb-10" variant="subtitle1">
             <CiClock1 className="inline mr-1" />
-            {post.date}
+            {timeLeft} 
           </Typography>
           <hr />
           <Typography
@@ -65,6 +63,9 @@ export default function SpecificJob(props: any) {
           >
             Description
           </Typography>
+          <div>
+            {job.description}
+          </div>
         </Grid>
         <Grid item sm={3} md={3}>
           <CardMedia
@@ -76,7 +77,7 @@ export default function SpecificJob(props: any) {
               borderRadius: 100,
             }}
             className="mx-auto mb-3"
-            image={post.image}
+            image={`${process.env.API}/company/logo/${job.company.id}`}
           />
 
           <Typography
@@ -85,12 +86,10 @@ export default function SpecificJob(props: any) {
             align="center"
             sx={{ display: { xs: "none", sm: "block" } }}
           >
-            {post.company}
+            {job.company.name}
           </Typography>
         </Grid>
       </Grid>
-
-        {isModalOpen && <ShowModel isModalOpen={isModalOpen} showModel = {showModal}/>}
     </>
   );
 }

@@ -6,22 +6,22 @@ import {
   Typography,
 } from "@mui/material";
 import Link from "next/link";
+import { ICompany } from "./type";
 
 export default function CompanyAlbum(props: any) {
-  const cards = [1, 2, 3, 4];
-
+  const companies:ICompany[] = props.companies
   return (
     <div className="mb-20">
       <Typography className="mb-3" variant="h4">
         Top company
       </Typography>
       <Grid container spacing={4} justifyContent="center">
-        {cards.map((card) => (
-          <Grid item key={card} md={3}>
+        {companies.map((company:ICompany) => (
+          <Grid item key={company.id} md={3}>
             <Card
               sx={{ height: "100%", display: "flex", flexDirection: "column" }}
             >
-              <Link href="/" >
+              <Link href={`/company/${company.id}`} >
                 <CardMedia
                   component="div"
                   sx={{
@@ -29,15 +29,14 @@ export default function CompanyAlbum(props: any) {
                     pt: "56.25%",
                     height:200,
                   }}
-                  image="https://source.unsplash.com/random?wallpapers"
+                  image={`${process.env.API}/company/logo/${company.id}`}
                 />
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Typography gutterBottom variant="h5" component="h2">
-                    Heading
+                    {company.name}
                   </Typography>
                   <Typography>
-                    This is a media card. You can use this section to describe
-                    the content.
+                    {company.description}
                   </Typography>
                 </CardContent>
               </Link>

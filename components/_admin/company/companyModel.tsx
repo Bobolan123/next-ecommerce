@@ -15,7 +15,11 @@ interface IModelCompanyProps {
 
 const CompanyModel: React.FC<IModelCompanyProps> = (props: any) => {
   const [value, setValue] = useState("");
+  
+  function handleChange(content:any, delta:any, source:any, editor:any) {
+    setValue(editor.getContents());
 
+  }
   const [form] = Form.useForm();
 
   return (
@@ -57,7 +61,7 @@ const CompanyModel: React.FC<IModelCompanyProps> = (props: any) => {
             label="Location"
             rules={[{ required: false }]}
           >
-            <ReactQuill theme="snow" value={value} onChange={setValue} />
+            <ReactQuill theme="snow" value={value} onChange={handleChange} />
           </Form.Item>
         </Form>
       </Modal>
