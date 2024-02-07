@@ -4,16 +4,16 @@ import JobsAlbum from "@/components/_home/jobs-album";
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 
 export default async function Home() {
-  const fetchCompanies = await fetch(`${process.env.API}/company/read`, {
+  const fetchCompanies = await fetch(`${process.env.API}/company/readAll`, {
     method:"GET"
   })
   const companies = await fetchCompanies.json()
 
-  const fetchJobs = await fetch(`${process.env.API}/job/readAll/`, {
+  const fetchJobs = await fetch(`${process.env.API}/job/readAllJobs/`, {
     method:"GET"
   })
-  const jobs = await fetchJobs.json()
-  console.log(jobs)
+  let jobs = await fetchJobs.json()
+  
   return (
     <>  
       <ResponsiveAppBar />
@@ -47,8 +47,8 @@ export default async function Home() {
           </Button>
         </Box>
         <div className="align-middle">
-          <CompanyAlbum companies = {companies}/>
-          <JobsAlbum jobs ={jobs}/>
+          <CompanyAlbum companies = {companies.data}/>
+          <JobsAlbum jobs ={jobs.data}/>
         </div> 
       </Container>
     </>
