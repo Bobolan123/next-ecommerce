@@ -1,4 +1,4 @@
-import JobPagination from "@/components/_job/Job-pagination";
+import JobPagination from "@/components/_job/render-Job-pagination";
 import PaginationMUI from "@/components/_job/paginationMUI";
 import { IAllJob } from "@/components/_job/type";
 import {

@@ -14,7 +14,7 @@ import Stack from "@mui/material/Stack";
 import { IJob } from "./type";
 import { useState, useEffect } from "react";
 
-export default function JobPagination(props: any) {
+export default function RenderJobPagination(props: any) {
   const job: IJob = props.job;
 
   const [logo, setLogo] = useState("");

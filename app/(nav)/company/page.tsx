@@ -1,16 +1,26 @@
-import {
-  Card,
-  CardContent,
-  CardMedia,
-  Grid,
-  Typography,
-  Link,
-  Pagination,
-  Stack
-} from "@mui/material";
+import CompanyPagination from "@/components/_company/render-company-pagination";
+import PaginationCompanyMUI from "@/components/_company/paginationCompany";
+import { IAllCompany } from "@/components/_company/type";
+import { Grid, Typography, Pagination, Stack } from "@mui/material";
 
-export default function Company() {
-  const cards = [1, 2, 3, 4];
+export default async function Company({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  const fetchAllCompanies = await fetch(`${process.env.API}/company/readAll`, {
+    method: "GET",
+  });
+  let fetchCompanies: IAllCompany = await fetchAllCompanies.json();
+  const companies = fetchCompanies.data;
+
+  const page = searchParams["page"] ?? "1";
+  const per_page = searchParams["per_page"] ?? "2";
+
+  const start = (Number(page) - 1) * Number(per_page);
+  const end = start + Number(per_page);
+
+  const entries = companies.slice(start, end);
 
   return (
     <div>
@@ -18,37 +28,16 @@ export default function Company() {
         Top company
       </Typography>
       <Grid container spacing={4} justifyContent="center" className="mb-9">
-        {cards.map((card) => (
-          <Grid item key={card} md={3}>
-            <Card
-              sx={{ height: "100%", display: "flex", flexDirection: "column" }}
-            >
-              <Link href="/" style={{ textDecoration: 'none', color:"black" }}>
-                <CardMedia
-                  component="div"
-                  sx={{
-                    // 16:9
-                    pt: "56.25%",
-                    height:200,
-                  }}
-                  image="https://source.unsplash.com/random?wallpapers"
-                />
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    Heading
-                  </Typography>
-                  <Typography>
-                    This is a media card. You can use this section to describe
-                    the content.
-                  </Typography>
-                </CardContent>
-              </Link>
-            </Card>
-          </Grid>
+        {entries.map((entry, index) => (
+          <CompanyPagination company={entry} />
         ))}
       </Grid>
       <Stack alignItems="center">
-        <Pagination count={10} variant="outlined" color="primary" />
+        <PaginationCompanyMUI
+          totalPage={companies.length}
+          page={page}
+          per_page={per_page}
+        />
       </Stack>
     </div>
   );

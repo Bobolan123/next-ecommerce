@@ -4,7 +4,7 @@ import { Pagination } from "@mui/material";
 import { useRouter } from "next/navigation";
 
 
-const PaginationMUI = (props:any) => {
+const JobPaginationMUI = (props:any) => {
   const router = useRouter();
 
   const page = props.page?? "1";
@@ -24,4 +24,4 @@ const PaginationMUI = (props:any) => {
   );
 }
 
-export default PaginationMUI
+export default JobPaginationMUI
