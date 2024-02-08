@@ -75,6 +75,8 @@ export default async function Job({
         <Stack alignItems="center">
           <PaginationMUI
             totalPage = {jobs.length}
+            page={page}
+            per_page = {per_page}
           />
         </Stack>
       </div>

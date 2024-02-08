@@ -12,9 +12,33 @@ import {
 import { CiLocationOn } from "react-icons/ci";
 import Stack from "@mui/material/Stack";
 import { IJob } from "./type";
+import { useState, useEffect } from "react";
 
 export default function JobPagination(props: any) {
-  const job:IJob = props.job
+  const job: IJob = props.job;
+
+  const [logo, setLogo] = useState("");
+  const [isLoading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`http://localhost:3001/api/company/logo/${job.company.id}`, {
+      method:"GET"
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return res.blob();
+      })
+      .then((blob) => {
+        const imgUrl = URL.createObjectURL(blob);
+        setLogo(imgUrl);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("There was a problem with the fetch operation:", error);
+      });
+  }, []);
 
   return (
     <Card sx={{ display: "flex" }}>
@@ -28,7 +52,7 @@ export default function JobPagination(props: any) {
           borderRadius: 100,
           marginLeft: 2,
         }}
-        image={`${process.env.API}/company/logo/${job.company.id}`}
+        image={logo}
       />
       <CardContent sx={{ flex: 1 }}>
         <Typography component="h2" variant="h5">
