@@ -1,4 +1,4 @@
-import JobPagination from "@/components/_job/render-Job-pagination";
+import RenderJobPagination from "@/components/_job/render-Job-pagination";
 import PaginationMUI from "@/components/_job/paginationMUI";
 import { IAllJob } from "@/components/_job/type";
 import {
@@ -10,6 +10,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import Link from "next/link";
 
 export default async function Job({
   searchParams,
@@ -65,18 +66,20 @@ export default async function Job({
       <div className="">
         <Grid container spacing={4} className="mb-9">
           {entries.map((entry, index) => (
-            <Grid item xs={12} md={6} >
-              <CardActionArea component="a" href="#">
-                <JobPagination job={entry} />
+            <Grid item xs={12} md={6}>
+              <CardActionArea>
+                <Link href={`/job/${entry.id}`}>
+                  <RenderJobPagination job={entry} />
+                </Link>
               </CardActionArea>
             </Grid>
           ))}
         </Grid>
         <Stack alignItems="center">
           <PaginationMUI
-            totalPage = {jobs.length}
+            totalPage={jobs.length}
             page={page}
-            per_page = {per_page}
+            per_page={per_page}
           />
         </Stack>
       </div>

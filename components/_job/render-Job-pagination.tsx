@@ -5,12 +5,9 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
-  Grid,
-  Pagination,
   Typography,
 } from "@mui/material";
 import { CiLocationOn } from "react-icons/ci";
-import Stack from "@mui/material/Stack";
 import { IJob } from "./type";
 import { useState, useEffect } from "react";
 
@@ -18,11 +15,10 @@ export default function RenderJobPagination(props: any) {
   const job: IJob = props.job;
 
   const [logo, setLogo] = useState("");
-  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch(`http://localhost:3001/api/company/logo/${job.company.id}`, {
-      method:"GET"
+      method: "GET",
     })
       .then((res) => {
         if (!res.ok) {
@@ -33,7 +29,6 @@ export default function RenderJobPagination(props: any) {
       .then((blob) => {
         const imgUrl = URL.createObjectURL(blob);
         setLogo(imgUrl);
-        setLoading(false);
       })
       .catch((error) => {
         console.error("There was a problem with the fetch operation:", error);

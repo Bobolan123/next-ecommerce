@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { CardMedia, CardContent, Grid, Card, Typography } from "@mui/material";
 import Link from "next/link";
@@ -8,11 +8,10 @@ const RenderCompanyPagination = (props: any) => {
   const company = props.company;
 
   const [logo, setLogo] = useState("");
-  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch(`http://localhost:3001/api/company/logo/${company.id}`, {
-      method:"GET"
+      method: "GET",
     })
       .then((res) => {
         if (!res.ok) {
@@ -23,7 +22,6 @@ const RenderCompanyPagination = (props: any) => {
       .then((blob) => {
         const imgUrl = URL.createObjectURL(blob);
         setLogo(imgUrl);
-        setLoading(false);
       })
       .catch((error) => {
         console.error("There was a problem with the fetch operation:", error);
@@ -33,7 +31,7 @@ const RenderCompanyPagination = (props: any) => {
     <>
       <Grid item key={company} md={3}>
         <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
-          <Link href="/" style={{ textDecoration: "none", color: "black" }}>
+          <Link href={`/company/${company.id}`} style={{ textDecoration: "none", color: "black" }}>
             <CardMedia
               component="div"
               sx={{
@@ -42,14 +40,12 @@ const RenderCompanyPagination = (props: any) => {
                 height: 200,
               }}
               image={logo}
-              />
+            />
             <CardContent sx={{ flexGrow: 1 }}>
               <Typography gutterBottom variant="h5" component="h2">
                 {company.name}
               </Typography>
-              <Typography>
-                {company.description}
-              </Typography>
+              <Typography>{company.description}</Typography>
             </CardContent>
           </Link>
         </Card>
