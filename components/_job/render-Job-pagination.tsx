@@ -33,7 +33,7 @@ export default function RenderJobPagination(props: any) {
       .catch((error) => {
         console.error("There was a problem with the fetch operation:", error);
       });
-  }, []);
+  }, [job]);
 
   return (
     <Card sx={{ display: "flex" }}>

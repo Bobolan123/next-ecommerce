@@ -8,7 +8,7 @@ export default async function Company({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const fetchAllCompanies = await fetch(`${process.env.API}/company/readAll`, {
+  const fetchAllCompanies = await fetch(`${process.env.API}/company/readAllCompany`, {
     method: "GET",
   });
   let fetchCompanies: IAllCompany = await fetchAllCompanies.json();
@@ -22,6 +22,7 @@ export default async function Company({
 
   const entries = companies.slice(start, end);
 
+  console.log(entries)
   return (
     <div>
       <Typography className="mb-3" variant="h4">

@@ -1,6 +1,7 @@
 "use client";
 
 import { CardMedia, CardContent, Grid, Card, Typography } from "@mui/material";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -26,18 +27,22 @@ const RenderCompanyPagination = (props: any) => {
       .catch((error) => {
         console.error("There was a problem with the fetch operation:", error);
       });
-  }, []);
+  }, [company]);
   return (
     <>
       <Grid item key={company} md={3}>
         <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
-          <Link href={`/company/${company.id}`} style={{ textDecoration: "none", color: "black" }}>
+          <Link
+            href={`/company/${company.id}`}
+            style={{ textDecoration: "none", color: "black" }}
+          >
             <CardMedia
               component="div"
               sx={{
                 // 16:9
                 pt: "56.25%",
-                height: 200,
+                height: 250,
+                alignSelf: "center",
               }}
               image={logo}
             />
