@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState } from 'react';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { message, Upload } from 'antd';
@@ -23,7 +25,7 @@ const beforeUpload = (file: FileType) => {
   return isJpgOrPng && isLt2M;
 };
 
-const UploadFile: React.FC = () => {
+const UploadFile: React.FC<{ onFileChange: (file: File | null) => void }> = ({ onFileChange }) => {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>();
 
@@ -37,6 +39,8 @@ const UploadFile: React.FC = () => {
       getBase64(info.file.originFileObj as FileType, (url) => {
         setLoading(false);
         setImageUrl(url);
+         // Call the callback with the selected file
+         onFileChange(info.file.originFileObj as FileType);
       });
     }
   };

@@ -22,7 +22,6 @@ export default async function Company({
 
   const entries = companies.slice(start, end);
 
-  console.log(entries)
   return (
     <div>
       <Typography className="mb-3" variant="h4">

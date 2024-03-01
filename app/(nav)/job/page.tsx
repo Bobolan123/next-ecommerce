@@ -17,7 +17,7 @@ export default async function Job({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const fetchJobs = await fetch(`${process.env.API}/job/readAllJobs`, {
+  const fetchJobs = await fetch(`${process.env.API}/job/readAllJob`, {
     method: "GET",
   });
   let job: IAllJob = await fetchJobs.json();

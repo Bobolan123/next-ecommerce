@@ -1,27 +1,33 @@
-"use client";
-
-import * as React from "react";
-import { styled } from "@mui/material/styles";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import { Button, Container, TextField } from "@mui/material";
+import {
+  Button,
+  Container,
+  Table,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+} from "@mui/material";
 import CompanyTable from "@/components/_admin/company/companyTable";
-import { useState } from "react";
-import dynamic from "next/dynamic";
+import AddCompanyButton from "@/components/_admin/company/addCompany.button";
+import { IAllCompany } from "@/components/_company/type";
 
-const CompanyModel = dynamic(
-  () => import("../../../components/_admin/company/companyModel"),
-  { ssr: false }
-);
+export default async function Company() {
 
-export default function Company() {
-  const [isOpenCompanyModel, setIsOpenCompanyModel] = useState(false);
+  const fetchAllCompanies = await fetch(
+    `${process.env.API}/company/readCompanies`,
+    {
+      method: "GET",
+      next: { tags: ["list-company"] },
+      cache: 'no-store' 
+    }
+  );
+  let fetchCompanies: IAllCompany = await fetchAllCompanies.json();
+  const companies = fetchCompanies.data;
 
-  const handleCompanyModel = () => {
-    setIsOpenCompanyModel(!isOpenCompanyModel);
-  };
   return (
     <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
       <Grid container spacing={3}>
@@ -63,15 +69,24 @@ export default function Company() {
               <Typography variant="h5" sx={{ fontWeight: "bold" }}>
                 List of companies
               </Typography>
-              <Button variant="contained" onClick={handleCompanyModel}>
-                Add
-              </Button>
+
+              <AddCompanyButton />
             </div>
-            <CompanyModel
-              isOpenCompanyModel={isOpenCompanyModel}
-              handleCompanyModel={handleCompanyModel}
-            />
-            <CompanyTable />
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Id</TableCell>
+                    <TableCell>Name</TableCell>
+                    <TableCell>Address</TableCell>
+                    <TableCell>CreatedAt</TableCell>
+                    <TableCell>UpdatedAt</TableCell>
+                    <TableCell>Action</TableCell>
+                  </TableRow>
+                </TableHead>
+                <CompanyTable companies={companies} />
+              </Table>
+            </TableContainer>
           </Paper>
         </Grid>
       </Grid>

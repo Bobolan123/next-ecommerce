@@ -22,6 +22,7 @@ export interface IJob {
     company: ICompany;
     level: string,
     resumes: []
+    timeDifference:string
 }
 
 export interface IAllJob {

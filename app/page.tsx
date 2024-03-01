@@ -4,12 +4,12 @@ import JobsAlbum from "@/components/_home/jobs-album";
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 
 export default async function Home() {
-  const fetchCompanies = await fetch(`${process.env.API}/company/readAll`, {
+  const fetchCompanies = await fetch(`${process.env.API}/company/readTopCompany`, {
     method:"GET"
   })
   const companies = await fetchCompanies.json()
 
-  const fetchJobs = await fetch(`${process.env.API}/job/readAllJobs/`, {
+  const fetchJobs = await fetch(`${process.env.API}/job/readAllJob/`, {
     method:"GET"
   })
   let jobs = await fetchJobs.json()

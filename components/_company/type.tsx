@@ -8,6 +8,8 @@ export interface ICompany {
     };
     location: string;
     filename: string;
+    created_at:string;
+    updated_at:string
 }
 
 export interface IAllCompany {

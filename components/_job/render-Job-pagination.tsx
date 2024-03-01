@@ -2,7 +2,6 @@
 
 import {
   Card,
-  CardActionArea,
   CardContent,
   CardMedia,
   Typography,
@@ -61,7 +60,7 @@ export default function RenderJobPagination(props: any) {
           $ {job.salary}
         </Typography>
         <Typography variant="subtitle1" color="text.secondary" align="right">
-          10 days ago
+          {job.timeDifference}
         </Typography>
       </CardContent>
     </Card>

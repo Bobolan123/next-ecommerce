@@ -17,7 +17,9 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 
-const NoSSR = dynamic(() => import("./_profile/modelProfile/ModelProfile"), { ssr: false });
+const NoSSR = dynamic(() => import("./_profile/modelProfile/ModelProfile"), {
+  ssr: false,
+});
 
 const pages = [
   ["Home", ""],
@@ -29,7 +31,6 @@ const settings = ["Profile", "Dashboard", "Logout"];
 
 function ResponsiveAppBar() {
   const [openProfile, setOpenProfile] = useState(false);
-
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -55,19 +56,18 @@ function ResponsiveAppBar() {
 
   const handleLogOut = (titleProfile: string) => {
     if (titleProfile === "Profile") {
-      setOpenProfile(true)
+      setOpenProfile(true);
     }
 
     if (titleProfile === "Dashboard") {
     }
     if (titleProfile === "Logout") {
-      
     }
   };
 
   const handlePopDownProfile = () => {
-    setOpenProfile(false)
-  }
+    setOpenProfile(false);
+  };
   return (
     <div>
       <AppBar position="static">
@@ -158,7 +158,7 @@ function ResponsiveAppBar() {
                 </Button>
               ))}
             </Box>
-
+            {/* <Link href={"/login"} className="text-xl">Login</Link>  */}
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -195,8 +195,11 @@ function ResponsiveAppBar() {
           </Toolbar>
         </Container>
       </AppBar>
-
-      <NoSSR openProfile = {openProfile} handlePopDownProfile ={handlePopDownProfile}/>  {/* Model profile */}
+      <NoSSR
+        openProfile={openProfile}
+        handlePopDownProfile={handlePopDownProfile}
+      />{" "}
+      {/* Model profile */}
     </div>
   );
 }

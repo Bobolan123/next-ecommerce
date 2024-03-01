@@ -7,12 +7,16 @@ import { CiLocationOn } from "react-icons/ci";
 import { CiClock1 } from "react-icons/ci";
 import ApplyButton from "@/components/_job/specificJob/apply.button";
 
-function calculateTimeLeft(created_at:any) {
+function calculateTimeLeft(created_at: any) {
   const createdAtDate = new Date(created_at) as any;
   const currentDate = new Date() as any;
   const timeDifference = createdAtDate - currentDate;
-  const daysDifference = Math.abs(Math.ceil(timeDifference / (1000 * 60 * 60 * 24)));
-  const hoursDifference = Math.abs(Math.ceil(timeDifference / (1000 * 60 * 60)));
+  const daysDifference = Math.abs(
+    Math.ceil(timeDifference / (1000 * 60 * 60 * 24))
+  );
+  const hoursDifference = Math.abs(
+    Math.ceil(timeDifference / (1000 * 60 * 60))
+  );
   const minutesDifference = Math.abs(Math.ceil(timeDifference / (1000 * 60)));
 
   return { daysDifference, hoursDifference, minutesDifference };
@@ -23,16 +27,19 @@ export default async function SpecificJob(props: any) {
   const fetchJob = await fetch(`${process.env.API}/job/readJob/${params.id}`);
   const job = await fetchJob.json();
 
-  const { daysDifference, hoursDifference, minutesDifference } = calculateTimeLeft(job.created_at);
+  const { daysDifference, hoursDifference, minutesDifference } =
+    calculateTimeLeft(job.created_at);
   let timeLeft;
 
   if (daysDifference > 0) {
-    timeLeft = `${daysDifference} day${daysDifference > 1 ? 's' : ''} ago`;
+    timeLeft = `${daysDifference} day${daysDifference > 1 ? "s" : ""} ago`;
   } else if (hoursDifference > 0) {
-    timeLeft = `${hoursDifference} hour${hoursDifference > 1 ? 's' : ''} ago`;
+    timeLeft = `${hoursDifference} hour${hoursDifference > 1 ? "s" : ""} ago`;
   } else {
-    timeLeft = `${minutesDifference} minute${minutesDifference > 1 ? 's' : ''} ago`;
-  }  
+    timeLeft = `${minutesDifference} minute${
+      minutesDifference > 1 ? "s" : ""
+    } ago`;
+  }
   return (
     <>
       <Grid container component="main" rowGap={3} spacing={2}>
@@ -53,19 +60,17 @@ export default async function SpecificJob(props: any) {
           </Typography>
           <Typography className="mb-10" variant="subtitle1">
             <CiClock1 className="inline mr-1" />
-            {timeLeft} 
+            {timeLeft}
           </Typography>
           <hr />
           <Typography
-            component="h1"  
+            component="h1"
             variant="h3"
             style={{ overflowWrap: "break-word" }}
           >
             Description
           </Typography>
-          <div>
-            {job.description}
-          </div>
+          <div>{job.description}</div>
         </Grid>
         <Grid item sm={3} md={3}>
           <CardMedia

@@ -6,6 +6,7 @@ export interface IJob {
   count: number;
   status: string;
   salary: number;
+  timeDifference:string
   company: {
     id:number,
     logo: {

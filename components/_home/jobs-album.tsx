@@ -53,7 +53,7 @@ export default function JobsAlbum(props: any) {
                       color="text.secondary"
                       align="right"
                     >
-                      10 days ago
+                      {job.timeDifference}
                     </Typography>
                   </CardContent>
                 </Card>
