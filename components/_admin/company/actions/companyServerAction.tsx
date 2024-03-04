@@ -15,9 +15,9 @@ export async function fetchCreateCompany(data: any) {
   return newCompany.data;
 }
 
-export async function fetchUpdateCompany(data: any, id:any) {
+export async function fetchUpdateCompany(data: any, id: any) {
   const res = await fetch(`${process.env.API}/company/update/${id}`, {
-    method: "POST",
+    method: "PATCH",
     body: data,
   });
 
@@ -28,7 +28,9 @@ export async function fetchUpdateCompany(data: any, id:any) {
 }
 
 export const deleteCompany = async (id: number) => {
-    await fetch(`http://localhost:3001/api/company/delete/${id}`, {
-        method: "DELETE",
-      });
-  };
+  await fetch(`http://localhost:3001/api/company/delete/${id}`, {
+    method: "DELETE",
+  });
+
+  revalidateTag("list-companies");
+};

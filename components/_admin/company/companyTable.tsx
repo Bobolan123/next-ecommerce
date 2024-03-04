@@ -1,40 +1,23 @@
 "use client";
 
 import * as React from "react";
-import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { GoPencil } from "react-icons/go";
 import { Button } from "@mui/material";
 import { MdDeleteOutline } from "react-icons/md";
 import { ICompany } from "../type";
-import { useEffect, useState } from "react";
-import UpdateCompanyModel from "./updateCompany.button";
+
 import dynamic from "next/dynamic";
+import { deleteCompany } from "./actions/companyServerAction";
 
 export default function CompanyTable(props: any) {
-  const [companies, setCompanies] = useState(props.companies);
   const UpdateCompanyButton = dynamic(() => import('./updateCompany.button'), {
     ssr: false
   })
   const handleDeleteCompany = async (id: number) => {
     try {
-      const deleteCompany = await fetch(
-        `http://localhost:3001/api/company/delete/${id}`,
-        {
-          method: "DELETE",
-        }
-      );
-      // Optimistically update the UI
-      if (deleteCompany) {
-        setCompanies(
-          companies.filter((company: ICompany) => company.id !== id)
-        );
-      }
+      await deleteCompany(id)
     } catch (error) {
       console.error("Error deleting company:", error);
     }
@@ -43,7 +26,7 @@ export default function CompanyTable(props: any) {
   return (
     <>
       <TableBody>
-        {companies.map((company: ICompany) => (
+        {props.companies.map((company: ICompany) => (
           <TableRow
             key={company.id}
             sx={{ "&:last-child td, &:last-child th": { border: 0 } }}

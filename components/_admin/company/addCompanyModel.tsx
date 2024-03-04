@@ -7,8 +7,8 @@ import TextArea from "antd/es/input/TextArea";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useRouter } from 'next/navigation'
-import { fetchCreateCompany } from "@/actions/companyServerAction";
 import { revalidateTag } from "next/cache";
+import { fetchCreateCompany } from "@/components/_admin/company/actions/companyServerAction";
 
 interface IModelCompanyProps {
   isOpenCompanyModel: boolean;

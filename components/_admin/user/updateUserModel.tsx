@@ -5,12 +5,12 @@ import { Modal, Select } from "antd";
 import { Form, Input } from "antd";
 import "react-quill/dist/quill.snow.css";
 
-interface IModelCompanyProps {
+interface IModelUserProps {
   isOpenUserModel: boolean;
   handleUserModel: () => void;
 }
 
-const UserModel: React.FC<IModelCompanyProps> = (props: any) => {
+const UserModel: React.FC<IModelUserProps> = (props: any) => {
   const handleChange = (value: string) => {
     console.log(`selected ${value}`);
   };
@@ -48,7 +48,6 @@ const UserModel: React.FC<IModelCompanyProps> = (props: any) => {
               <Input />
             </Form.Item>
           </div>
-
           <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
             <Form.Item name="name" label="Name" rules={[{ required: true }]}>
               <Input />

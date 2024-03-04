@@ -1,25 +1,32 @@
-"use client";
-
-import * as React from "react";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import { Button, Container, TextField } from "@mui/material";
-import CompanyTable from "@/components/_admin/company/companyTable";
-import { useState } from "react";
-import dynamic from "next/dynamic";
+import {
+  Button,
+  Container,
+  Table,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+} from "@mui/material";
+import AddCompanyButton from "@/components/_admin/company/addCompany.button";
+import { IAllUser } from "@/type";
+import UserTable from "@/components/_admin/user/userTable";
+import AddUserButton from "@/components/_admin/user/addUser.button";
 
-const UserModel = dynamic(
-  () => import("../../../components/_admin/user/userModel"),
-  { ssr: false }
-);
-
-export default function Company() {
-  const [isOpenUserModel, setIsOpenUserModel] = useState(false);
-
-  const handleUserModel = () => {
-    setIsOpenUserModel(!isOpenUserModel);
-  };
+export default async function User() {
+  const fetchAllUsers = await fetch(
+    `${process.env.API}/user/read`,
+    {
+      method: "GET",
+      next: { tags: ["users"]},
+      cache: 'no-store'
+    }
+  );
+  let fetchUsers: IAllUser = await fetchAllUsers.json();
+  const users = fetchUsers.data;
   return (
     <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
       <Grid container spacing={3}>
@@ -37,16 +44,16 @@ export default function Company() {
             <TextField
               className="ml-3 mr-5"
               size="small"
-              id="name"
-              label="user name"
+              id="outlined-basic"
+              label="company name"
               variant="outlined"
             />
-            Email:{" "}
+            Address:{" "}
             <TextField
               className="ml-3"
               size="small"
-              id="email"
-              label="email"
+              id="outlined-basic"
+              label="location"
               variant="outlined"
             />
             <Button variant="contained" size="small">
@@ -59,17 +66,30 @@ export default function Company() {
           <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
             <div className="flex justify-between mb-5">
               <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-                List of Users
+                List of users
               </Typography>
-              <Button variant="contained" onClick={handleUserModel}>
-                Add
-              </Button>
+
+              <AddUserButton/>
             </div>
-            <UserModel
-              isOpenUserModel={isOpenUserModel}
-              handleUserModel={handleUserModel}
-            />
-            <CompanyTable />
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Id</TableCell>
+                    <TableCell>Email:</TableCell>
+                    <TableCell>Password:</TableCell>
+                    <TableCell>Name:</TableCell>
+                    <TableCell>Age:</TableCell>
+                    <TableCell>Gender:</TableCell>
+                    <TableCell>Role:</TableCell>
+                    <TableCell>CreatedAt</TableCell>
+                    <TableCell>UpdatedAt</TableCell>
+                    <TableCell>Action</TableCell>
+                  </TableRow>
+                </TableHead>
+                <UserTable users={users}/>
+              </Table>
+            </TableContainer>
           </Paper>
         </Grid>
       </Grid>

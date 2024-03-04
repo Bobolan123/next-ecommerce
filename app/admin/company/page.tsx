@@ -21,7 +21,7 @@ export default async function Company() {
     `${process.env.API}/company/readCompanies`,
     {
       method: "GET",
-      next: { tags: ["list-company"] },
+      next: { tags: ["list-companies"] },
       cache: 'no-store' 
     }
   );

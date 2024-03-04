@@ -2,9 +2,7 @@
 
 import React, { useState } from "react";
 import { Modal, Form, Input } from "antd";
-import UploadFile from "./uploadFile";
 import TextArea from "antd/es/input/TextArea";
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useRouter } from "next/navigation";
 import { fetchUpdateCompany } from "@/components/_admin/company/actions/companyServerAction";
@@ -13,26 +11,12 @@ import { GoPencil } from "react-icons/go";
 
 const UpdateCompanyModel = (props: any) => {
   const router = useRouter();
-  const [text, setText] = useState("");
   const [location, setLocation] = useState("");
   const [name, setName] = useState("");
-  const [logoFile, setLogoFile] = useState<File | null>(null); // State for logo file
   const [isOpen, setIsOpen] = useState(false);
-
-  function handleChangeQuill(
-    content: any,
-    delta: any,
-    source: any,
-    editor: any
-  ) {
-    setText(editor.getContents());
-  }
 
   const [form] = Form.useForm();
 
-  const handleLogoFileChange = (file: File | null) => {
-    setLogoFile(file);
-  };
 
   const handleCompanyModel = () => {
     setIsOpen(!isOpen);
@@ -42,10 +26,6 @@ const UpdateCompanyModel = (props: any) => {
       const formData = new FormData();
       formData.append("name", name);
       formData.append("location", location);
-      formData.append("description", text);
-      if (logoFile) {
-        formData.append("logo", logoFile);
-      }
 
       const response = await fetchUpdateCompany(formData, props.id);
 
@@ -94,7 +74,6 @@ const UpdateCompanyModel = (props: any) => {
           </Form.Item>
           <div className="flex justify-between">
             <Form.Item name="logo" label="Logo" rules={[{ required: true }]}>
-              <UploadFile onFileChange={handleLogoFileChange} />
             </Form.Item>
             <Form.Item
               name="location"
@@ -113,12 +92,6 @@ const UpdateCompanyModel = (props: any) => {
             label="Description"
             rules={[{ required: false }]}
           >
-            <ReactQuill
-              theme="snow"
-              value={text}
-              onChange={handleChangeQuill}
-              style={{ height: 100, marginBottom: 30 }}
-            />
           </Form.Item>
         </Form>
       </Modal>
