@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Modal, Form, Input, Dropdown, Button, Menu } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-import { fetchCreateUser } from "./actions/userServerAction";
+import { fetchCreateUser, fetchUserById } from "./actions/userServerAction";
 import { useRouter } from "next/navigation";
 
 interface IModelUserProps {
@@ -21,7 +21,6 @@ const AddUserModel: React.FC<IModelUserProps> = (props: any) => {
   const [company, setCompany] = useState("");
   const [location, setLocation] = useState("");
 
-  const router =useRouter()
   const genderItems = [
     { key: "male", label: "Male" },
     { key: "female", label: "Female" },
@@ -58,7 +57,6 @@ const AddUserModel: React.FC<IModelUserProps> = (props: any) => {
     };
 
     const user = await fetchCreateUser(userData);
-    router.refresh()
     // Close the modal
     props.handleUserModel();
   };

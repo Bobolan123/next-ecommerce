@@ -22,7 +22,6 @@ export default async function Company() {
     {
       method: "GET",
       next: { tags: ["list-companies"] },
-      cache: 'no-store' 
     }
   );
   let fetchCompanies: IAllCompany = await fetchAllCompanies.json();

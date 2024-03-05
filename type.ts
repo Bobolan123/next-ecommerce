@@ -96,10 +96,17 @@ export interface IUser {
     updated_at: string;
     resumes: IResume[];
     role: IRole;
+    company: ICompany
 }
 
 export interface IAllUser {
     statusCode: number;
     message: string;
     data: IUser[];
+}
+
+export interface IUpdateUser {
+    statusCode: number;
+    message: string;
+    data: IUser;
 }

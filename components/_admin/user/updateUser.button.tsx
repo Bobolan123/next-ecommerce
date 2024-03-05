@@ -1,102 +1,176 @@
 "use client";
 
 import React, { useState } from "react";
-import { Modal, Form, Input } from "antd";
+import { Modal, Form, Input, Dropdown, Menu } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import "react-quill/dist/quill.snow.css";
 import { useRouter } from "next/navigation";
-import { fetchUpdateCompany } from "@/components/_admin/company/actions/companyServerAction";
 import { Button } from "@mui/material";
 import { GoPencil } from "react-icons/go";
+import { fetchUpdateUser } from "./actions/userServerAction";
+import { DownOutlined } from "@ant-design/icons";
 
-const UpdateCompanyModel = (props: any) => {
-  const router = useRouter();
-  const [location, setLocation] = useState("");
+const UpdateUserModel = (props: any) => {
   const [name, setName] = useState("");
+  const [gender, setGender] = useState("");
+  const [role, setRole] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [age, setAge] = useState("");
+  const [company, setUser] = useState("");
+  const [location, setLocation] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
-  const [form] = Form.useForm();
+  const genderItems = [
+    { key: "male", label: "Male" },
+    { key: "female", label: "Female" },
+  ];
 
+  const roleItems = [
+    { key: "admin", label: "Admin" },
+    { key: "user", label: "User" },
+  ];
 
-  const handleCompanyModel = () => {
-    setIsOpen(!isOpen);
-  };
   const handleOk = async () => {
-    try {
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("location", location);
+    // Map the role key to the desired numerical value
+    const roleValueMap: { [key: string]: number } = {
+      admin: 1,
+      user: 2,
+    };
 
-      const response = await fetchUpdateCompany(formData, props.id);
-
-      if (response) {
-        console.log("Company updated successfully");
-        window.location.reload(); // Reload the page
-      } else {
-        console.error("Failed to updaetd company:");
-      }
-    } catch (error) {
-      console.error("Error updated company:", error);
+    // Ensure role is one of the keys in roleValueMap
+    if (!(role in roleValueMap)) {
+      // Handle error here if role is not one of the expected values
+      return;
     }
 
-    // Close the modal
-    handleCompanyModel();
+    // Gather all the form data
+    const userData = {
+      name,
+      gender,
+      role: roleValueMap[role], // Set the role based on the mapped value
+      email,
+      password,
+      age,
+      company,
+      location,
+    };
+
+    const user = await fetchUpdateUser(userData, props.id);
+    handleUserModel();
   };
 
+  const handleUserModel = () => {
+    setIsOpen(!isOpen);
+  };
   return (
     <div>
       <Button className="m-0">
         <GoPencil
           style={{ color: "darkorange" }}
           size={20}
-          onClick={handleCompanyModel}
+          onClick={handleUserModel}
         />
       </Button>
       <Modal
         okButtonProps={{ style: { backgroundColor: "#1677ff" } }}
-        title="Create new Company"
+        title="Create new User"
         centered
         open={isOpen}
         onOk={handleOk}
-        onCancel={() => handleCompanyModel()}
+        onCancel={() => handleUserModel()}
         width={1000}
         className=""
         style={{ maxWidth: "calc(100% - 320px)", marginLeft: "160px" }}
       >
-        <Form
-          form={form}
-          name="validateOnly"
-          layout="vertical"
-          autoComplete="off"
-        >
-          <Form.Item name="name" label="Name" rules={[{ required: true }]}>
-            <Input onChange={(e) => setName(e.target.value)} />
-          </Form.Item>
-          <div className="flex justify-between">
-            <Form.Item name="logo" label="Logo" rules={[{ required: true }]}>
+        <Form name="validateOnly" layout="vertical" autoComplete="off">
+          <div className="grid grid-cols-2 gap-4">
+            <Form.Item name="email" label="Email" rules={[{ required: true }]}>
+              <Input
+                placeholder="Type Email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </Form.Item>
+            <Form.Item
+              name="password"
+              label="Password"
+              rules={[{ required: true }]}
+            >
+              <Input
+                placeholder="Type password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Form.Item>
+          </div>
+
+          <div className="grid grid-cols-4 gap-4">
+            <Form.Item name="name" label="Name" rules={[{ required: true }]}>
+              <Input
+                placeholder="Type name"
+                onChange={(e) => setName(e.target.value)}
+              />
+            </Form.Item>
+            <Form.Item name="age" label="Age" rules={[{ required: true }]}>
+              <Input
+                placeholder="Type age"
+                onChange={(e) => setAge(e.target.value)}
+              />
+            </Form.Item>
+            <Form.Item
+              name="gender"
+              label="Gender"
+              rules={[{ required: true }]}
+            >
+              <Dropdown
+                overlay={
+                  <Menu onClick={({ key }) => setGender(key)}>
+                    {genderItems.map((item) => (
+                      <Menu.Item key={item.key}>{item.label}</Menu.Item>
+                    ))}
+                  </Menu>
+                }
+              >
+                <Button>
+                  {gender || "Select Gender"} <DownOutlined />
+                </Button>
+              </Dropdown>
+            </Form.Item>
+            <Form.Item name="role" label="Role" rules={[{ required: true }]}>
+              <Dropdown
+                overlay={
+                  <Menu onClick={({ key }) => setRole(key)}>
+                    {roleItems.map((item) => (
+                      <Menu.Item key={item.key}>{item.label}</Menu.Item>
+                    ))}
+                  </Menu>
+                }
+              >
+                <Button>
+                  {role || "Select Role"} <DownOutlined />
+                </Button>
+              </Dropdown>
+            </Form.Item>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <Form.Item name="company" label="User" rules={[{ required: true }]}>
+              <Input onChange={(e) => setUser(e.target.value)} />
             </Form.Item>
             <Form.Item
               name="location"
               label="Location"
               rules={[{ required: true }]}
             >
-              <TextArea
-                rows={4}
-                maxLength={6}
+              <Input
+                placeholder="Type location"
                 onChange={(e) => setLocation(e.target.value)}
               />
             </Form.Item>
           </div>
-          <Form.Item
-            name="Description"
-            label="Description"
-            rules={[{ required: false }]}
-          >
-          </Form.Item>
         </Form>
       </Modal>
     </div>
   );
 };
 
-export default UpdateCompanyModel;
+export default UpdateUserModel;

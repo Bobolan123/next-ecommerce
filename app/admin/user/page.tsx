@@ -81,6 +81,7 @@ export default async function User() {
                     <TableCell>Name:</TableCell>
                     <TableCell>Age:</TableCell>
                     <TableCell>Gender:</TableCell>
+                    <TableCell>Location:</TableCell>
                     <TableCell>Role:</TableCell>
                     <TableCell>CreatedAt</TableCell>
                     <TableCell>UpdatedAt</TableCell>
