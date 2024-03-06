@@ -16,7 +16,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { mainListItems } from "./listItems";
-import { Button, Container, Grid, Paper, TextField } from "@mui/material";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const drawerWidth: number = 240;
 
@@ -84,6 +85,8 @@ export default function Layout({
     <main>
       <ThemeProvider theme={defaultTheme}>
         <Box sx={{ display: "flex" }}>
+          <ToastContainer />
+
           <CssBaseline />
 
           <AppBar position="absolute" open={open}>

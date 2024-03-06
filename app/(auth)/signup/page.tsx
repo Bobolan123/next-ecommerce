@@ -14,36 +14,54 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { IUserRes } from "@/type";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default async function SignUp() {
-  const router = useRouter()
+export default function SignUp() {
+  const router = useRouter();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    const email = data.get("email");
+    const password = data.get("password");
+    const name = data.get("name");
+
+    if (!email || !password || !name) {
+      toast.error("All fields are required");
+      return;
+    }
+
     let newUser = {
-      email: data.get("email"),
-      password: data.get("password"),
-      name: data.get("name"),
+      email: email.toString(),
+      password: password.toString(),
+      name: name.toString(),
+      role: 2,
     };
-    
+
     try {
-      const res = await fetch('http://localhost:3001/api/user/create',{
-        method: 'POST',
+      const res = await fetch("http://localhost:3001/api/user/create", {
+        method: "POST",
         body: JSON.stringify(newUser),
         headers: {
-          'content-type': 'application/json'
-        }
-      })
-      if(res.ok){
-        router.push('/login')
+          "content-type": "application/json",
+        },
+      });
+      const user: IUserRes = await res.json();
+      if (user?.statusCode === 201) {
+        toast.success(user.message);
+        // router.push("/login");
+      } else {
+        toast.error(user.message);
       }
     } catch (error) {
-        console.log("err ", error)
+      console.error("Error registering user:", error);
+      // Handle error here, show error message to the user
     }
   };
 
@@ -60,7 +78,7 @@ export default async function SignUp() {
             alignItems: "center",
             boxShadow: 6,
             borderRadius: 3,
-            borderColor: "gray"
+            borderColor: "gray",
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
@@ -74,7 +92,6 @@ export default async function SignUp() {
             noValidate
             onSubmit={handleSubmit}
             sx={{ mt: 3 }}
-            
           >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={12}>
@@ -136,6 +153,7 @@ export default async function SignUp() {
           </Box>
         </Box>
       </Container>
+      <ToastContainer />
     </ThemeProvider>
   );
 }

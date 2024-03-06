@@ -10,16 +10,19 @@ import { ICompany } from "../type";
 
 import dynamic from "next/dynamic";
 import { deleteCompany } from "./actions/companyServerAction";
+import { toast } from "react-toastify";
 
 export default function CompanyTable(props: any) {
   const UpdateCompanyButton = dynamic(() => import('./updateCompany.button'), {
     ssr: false
-  })
+  });
+
   const handleDeleteCompany = async (id: number) => {
     try {
-      await deleteCompany(id)
-    } catch (error) {
-      console.error("Error deleting company:", error);
+      await deleteCompany(id);
+      toast.success("Company deleted successfully");
+    } catch (error:any) {
+      toast.error("Error deleting company: " + error.message);
     }
   };
 
@@ -39,9 +42,7 @@ export default function CompanyTable(props: any) {
             <TableCell>{company.created_at}</TableCell>
             <TableCell>{company.updated_at}</TableCell>
             <TableCell className="flex">
-
-              <UpdateCompanyButton id = {company.id}/>
-
+              <UpdateCompanyButton id={company.id} />
               <Button
                 className="m-0"
                 onClick={() => {

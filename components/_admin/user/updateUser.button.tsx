@@ -1,14 +1,12 @@
-"use client";
+'use client'
 
 import React, { useState } from "react";
 import { Modal, Form, Input, Dropdown, Menu } from "antd";
-import TextArea from "antd/es/input/TextArea";
-import "react-quill/dist/quill.snow.css";
-import { useRouter } from "next/navigation";
 import { Button } from "@mui/material";
 import { GoPencil } from "react-icons/go";
 import { fetchUpdateUser } from "./actions/userServerAction";
 import { DownOutlined } from "@ant-design/icons";
+import { toast } from "react-toastify";
 
 const UpdateUserModel = (props: any) => {
   const [name, setName] = useState("");
@@ -29,40 +27,58 @@ const UpdateUserModel = (props: any) => {
   const roleItems = [
     { key: "admin", label: "Admin" },
     { key: "user", label: "User" },
+    { key: "hr", label: "HR" },
   ];
 
   const handleOk = async () => {
-    // Map the role key to the desired numerical value
-    const roleValueMap: { [key: string]: number } = {
-      admin: 1,
-      user: 2,
-    };
+    try {
+      // Check if any of the required fields are empty
+      if (!name || !gender || !role || !email || !password || !age || !company || !location) {
+        throw new Error("Please fill out all the required fields.");
+      }
 
-    // Ensure role is one of the keys in roleValueMap
-    if (!(role in roleValueMap)) {
-      // Handle error here if role is not one of the expected values
-      return;
+      // Map the role key to the desired numerical value
+      const roleValueMap: { [key: string]: number } = {
+        admin: 1,
+        user: 2,
+        hr: 3,
+      };
+
+      // Ensure role is one of the keys in roleValueMap
+      if (!(role in roleValueMap)) {
+        throw new Error("Invalid role selected.");
+      }
+
+      // Gather all the form data
+      const userData = {
+        name,
+        gender,
+        role: roleValueMap[role], // Set the role based on the mapped value
+        email,
+        password,
+        age,
+        company,
+        location,
+      };
+
+      // Update user
+      await fetchUpdateUser(userData, props.id);
+
+      // Display success message
+      toast.success("User updated successfully.");
+
+      // Close the modal
+      handleUserModel();
+    } catch (error:any) {
+      // Display error message
+      toast.error(error.message);
     }
-
-    // Gather all the form data
-    const userData = {
-      name,
-      gender,
-      role: roleValueMap[role], // Set the role based on the mapped value
-      email,
-      password,
-      age,
-      company,
-      location,
-    };
-
-    const user = await fetchUpdateUser(userData, props.id);
-    handleUserModel();
   };
 
   const handleUserModel = () => {
     setIsOpen(!isOpen);
   };
+
   return (
     <div>
       <Button className="m-0">
@@ -74,7 +90,7 @@ const UpdateUserModel = (props: any) => {
       </Button>
       <Modal
         okButtonProps={{ style: { backgroundColor: "#1677ff" } }}
-        title="Create new User"
+        title="Update User"
         centered
         open={isOpen}
         onOk={handleOk}

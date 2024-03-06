@@ -6,19 +6,23 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { Button } from "@mui/material";
 import { MdDeleteOutline } from "react-icons/md";
-import { useState } from "react";
 import dynamic from "next/dynamic";
 import { IUser } from "@/type";
-import { revalidateTag } from "next/cache";
 import { deleteUser } from "./actions/userServerAction";
+import { toast } from "react-toastify";
 
 export default function UserTable(props: any) {
   const UpdateUserButton = dynamic(() => import("./updateUser.button"), {
     ssr: false,
   });
-  const handleDeleteUser = (id: number) => {
-    const deleteUserById = deleteUser(id)
-    
+
+  const handleDeleteUser = async (id: number) => {
+    try {
+      await deleteUser(id);
+      toast.success("User deleted successfully");
+    } catch (error: any) {
+      toast.error("Error deleting user: " + error.message);
+    }
   };
 
   return (
@@ -43,7 +47,6 @@ export default function UserTable(props: any) {
             <TableCell>{user.updated_at}</TableCell>
             <TableCell className="flex">
               <UpdateUserButton id={user.id} />
-
               <Button
                 className="m-0"
                 onClick={() => {

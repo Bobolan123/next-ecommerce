@@ -6,9 +6,8 @@ import UploadFile from "./uploadFile";
 import TextArea from "antd/es/input/TextArea";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { useRouter } from 'next/navigation'
-import { revalidateTag } from "next/cache";
 import { fetchCreateCompany } from "@/components/_admin/company/actions/companyServerAction";
+import { toast } from "react-toastify";
 
 interface IModelCompanyProps {
   isOpenCompanyModel: boolean;
@@ -16,7 +15,6 @@ interface IModelCompanyProps {
 }
 
 const AddCompanyModel: React.FC<IModelCompanyProps> = (props: any) => {
-  const router = useRouter()
   const [text, setText] = useState("");
   const [location, setLocation] = useState("");
   const [name, setName] = useState("");
@@ -47,23 +45,17 @@ const AddCompanyModel: React.FC<IModelCompanyProps> = (props: any) => {
         formData.append("logo", logoFile);
       }
 
-      
-      const response = await fetchCreateCompany(formData)
+      const response = await fetchCreateCompany(formData);
 
       if (response) {
-        console.log("Company created successfully"); 
-        window.location.reload(); // Reload the page
-        
-
+        toast.success("Company created successfully");
+        props.handleCompanyModel();
       } else {
-        console.error("Failed to create company:");
+        throw new Error("Failed to create company");
       }
-    } catch (error) {
-      console.error("Error creating company:", error);
+    } catch (error: any) {
+      toast.error("Error creating company: " + error.message);
     }
-
-    // Close the modal
-    props.handleCompanyModel();
   };
 
   return (

@@ -6,13 +6,12 @@ import UploadFile from "./uploadFile";
 import TextArea from "antd/es/input/TextArea";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { useRouter } from "next/navigation";
 import { fetchUpdateCompany } from "@/components/_admin/company/actions/companyServerAction";
 import { Button } from "@mui/material";
 import { GoPencil } from "react-icons/go";
+import { toast } from "react-toastify";
 
 const UpdateCompanyModel = (props: any) => {
-  const router = useRouter();
   const [text, setText] = useState("");
   const [location, setLocation] = useState("");
   const [name, setName] = useState("");
@@ -37,6 +36,7 @@ const UpdateCompanyModel = (props: any) => {
   const handleCompanyModel = () => {
     setIsOpen(!isOpen);
   };
+
   const handleOk = async () => {
     try {
       const formData = new FormData();
@@ -50,13 +50,12 @@ const UpdateCompanyModel = (props: any) => {
       const response = await fetchUpdateCompany(formData, props.id);
 
       if (response) {
-        console.log("Company updated successfully");
-        window.location.reload(); // Reload the page
+        toast.success("Company updated successfully");
       } else {
-        console.error("Failed to updaetd company:");
+        throw new Error("Failed to update company");
       }
-    } catch (error) {
-      console.error("Error updated company:", error);
+    } catch (error:any) {
+      toast.error("Error updating company: " + error.message);
     }
 
     // Close the modal
@@ -74,7 +73,7 @@ const UpdateCompanyModel = (props: any) => {
       </Button>
       <Modal
         okButtonProps={{ style: { backgroundColor: "#1677ff" } }}
-        title="Create new Company"
+        title="Update Company"
         centered
         open={isOpen}
         onOk={handleOk}

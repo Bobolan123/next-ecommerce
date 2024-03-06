@@ -16,6 +16,8 @@ import AdbIcon from "@mui/icons-material/Adb";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const NoSSR = dynamic(() => import("./_profile/modelProfile/ModelProfile"), {
   ssr: false,
@@ -70,6 +72,8 @@ function ResponsiveAppBar() {
   };
   return (
     <div>
+      <ToastContainer />
+      
       <AppBar position="static">
         <Container maxWidth="xl">
           <Toolbar disableGutters>

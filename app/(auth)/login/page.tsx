@@ -14,6 +14,10 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { loginAuth } from "./actions/loginActions";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { setCookie } from 'cookies-next';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme({
@@ -28,14 +32,35 @@ const defaultTheme = createTheme({
   },
 });
 
-export default async function SignIn() {
+export default function SignIn() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const userAcc = {
-      username: data.get("email"),
-      password: data.get("password"),
-    };
+    const email = data.get("email");
+    const password = data.get("password");
+
+    if (email && password) {
+      const userAcc = {
+        username: email.toString(),
+        password: password.toString(),
+      };
+      try {
+        const jwt = await loginAuth(userAcc);
+        if (jwt) {
+          toast.success("Success");
+          setCookie('jwt', jwt.access_token);
+
+        } else {
+          toast.error("Email or password are false");
+        }
+      } catch (error: any) {
+        toast.error("Failed to login: " + error.message);
+        console.error("Error logging in:", error);
+      }
+    } else {
+      toast.error("Email or password is missing!");
+      console.error("Email or password is missing");
+    }
   };
 
   return (
@@ -44,14 +69,14 @@ export default async function SignIn() {
         <CssBaseline />
         <Box
           padding={3}
-          sx={{    
+          sx={{
             marginTop: 8,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             boxShadow: 6,
             borderRadius: 3,
-            borderColor: "gray"
+            borderColor: "gray",
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
@@ -113,6 +138,7 @@ export default async function SignIn() {
           </Box>
         </Box>
       </Container>
+      <ToastContainer />
     </ThemeProvider>
   );
 }

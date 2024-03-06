@@ -105,6 +105,12 @@ export interface IAllUser {
     data: IUser[];
 }
 
+export interface IUserRes {
+    statusCode: number;
+    message: string;
+    data: IUser;
+}
+
 export interface IUpdateUser {
     statusCode: number;
     message: string;

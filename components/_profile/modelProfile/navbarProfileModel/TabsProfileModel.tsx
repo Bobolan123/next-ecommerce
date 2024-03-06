@@ -4,7 +4,7 @@ import type { TabsProps } from 'antd';
 import ApplyCV from './applyCV/ApplyCV';
 
 const onChange = (key: string) => {
-  console.log(key);
+  
 };
 
 const items: TabsProps['items'] = [

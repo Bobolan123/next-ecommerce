@@ -5,6 +5,7 @@ import { Modal, Form, Input, Dropdown, Button, Menu } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { fetchCreateUser, fetchUserById } from "./actions/userServerAction";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 interface IModelUserProps {
   isOpenUserModel: boolean;
@@ -29,36 +30,60 @@ const AddUserModel: React.FC<IModelUserProps> = (props: any) => {
   const roleItems = [
     { key: "admin", label: "Admin" },
     { key: "user", label: "User" },
+    { key: "hr", label: "HR" },
   ];
 
   const handleOk = async () => {
-    // Map the role key to the desired numerical value
-    const roleValueMap: { [key: string]: number } = {
-      admin: 1,
-      user: 2,
-    };
+    try {
+      // Check if any of the required fields are empty
+      if (
+        !name ||
+        !gender ||
+        !role ||
+        !email ||
+        !password ||
+        !age ||
+        !company ||
+        !location
+      ) {
+        throw new Error("Please fill out all the required fields.");
+      }
 
-    // Ensure role is one of the keys in roleValueMap
-    if (!(role in roleValueMap)) {
-      // Handle error here if role is not one of the expected values
-      return;
+      // Map the role key to the desired numerical value
+      const roleValueMap: { [key: string]: number } = {
+        admin: 1,
+        user: 2,
+        hr: 3,
+      };
+
+      // Gather all the form data
+      const userData = {
+        name,
+        gender,
+        role: roleValueMap[role], // Set the role based on the mapped value
+        email,
+        password,
+        age,
+        company,
+        location,
+      };
+
+      // Create user
+      const user = await fetchCreateUser(userData);
+
+      if (user) {
+        // Display success message
+        toast.success("User created successfully.");
+      } else {
+        toast.error("User not found");
+      }
+
+      // Close the modal
+      props.handleUserModel();
+    } catch (error: any) {
+      // Display error message
+      toast.error(error.message);
     }
-
-    // Gather all the form data
-    const userData = {
-      name,
-      gender,
-      role: roleValueMap[role], // Set the role based on the mapped value
-      email,
-      password,
-      age,
-      company,
-      location,
-    };
-
-    const user = await fetchCreateUser(userData);
-    // Close the modal
-    props.handleUserModel();
   };
 
   return (
