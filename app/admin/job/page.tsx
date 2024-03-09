@@ -3,18 +3,27 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import RoleTable from "@/components/_admin/role/roleTable";
-import { Button, Container, Table, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material";
+import {
+  Button,
+  Container,
+  Table,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+} from "@mui/material";
 import JobTable from "@/components/_admin/job/JobTable";
 import { IAllJob } from "@/type";
-import AddJobButton from "@/components/_admin/job/addJob.button";
+import Link from "next/link";
 
 export default async function Job() {
   const fetchJobs = await fetch(`${process.env.API}/job/readAllJob/`, {
-    method:"GET",
-    next: { tags: ["jobs"]},
-    cache: 'no-store'
-})
-  let jobs:IAllJob = await fetchJobs.json()
+    method: "GET",
+    next: { tags: ["jobs"] },
+    cache: "no-store",
+  });
+  let jobs: IAllJob = await fetchJobs.json();
   return (
     <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
       <Grid container spacing={3}>
@@ -56,8 +65,11 @@ export default async function Job() {
               <Typography variant="h5" sx={{ fontWeight: "bold" }}>
                 List of Jobs
               </Typography>
-
-              <AddJobButton/>
+              <Link href={"job/upsert"}>
+                <Button variant="contained" color="primary">
+                  Create
+                </Button>
+              </Link>
             </div>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -70,7 +82,7 @@ export default async function Job() {
                     <TableCell>Action</TableCell>
                   </TableRow>
                 </TableHead>
-                <JobTable jobs = {jobs.data}/>
+                <JobTable jobs={jobs.data} />
               </Table>
             </TableContainer>
           </Paper>

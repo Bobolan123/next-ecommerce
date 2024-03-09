@@ -33,8 +33,8 @@ const pages = [
 const settings = ["Profile", "Dashboard", "Logout"];
 
 function ResponsiveAppBar() {
-  const [isLogin, setIsLogin] = useState(false)
-  
+  const [isLogin, setIsLogin] = useState(false);
+
   const [openProfile, setOpenProfile] = useState(false);
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -68,7 +68,7 @@ function ResponsiveAppBar() {
     }
     if (titleProfile === "Logout") {
       deleteCookie("jwt");
-      setIsLogin(false)
+      setIsLogin(false);
     }
   };
 
@@ -79,11 +79,11 @@ function ResponsiveAppBar() {
   useEffect(() => {
     const jwt = getCookie("jwt");
     if (jwt) {
-      setIsLogin(true)
+      setIsLogin(true);
     } else {
-      setIsLogin(false)
+      setIsLogin(false);
     }
-  }, [])
+  }, []);
   return (
     <div>
       <ToastContainer />
@@ -166,13 +166,15 @@ function ResponsiveAppBar() {
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {pages.map((page) => (
-                <Button
-                  key={page[1]}
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  <Link href={`/${page[1].toLowerCase()}`}>{page[0]}</Link>
-                </Button>
+                <Link href={`/${page[1].toLowerCase()}`}>
+                  <Button
+                    key={page[1]}
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: "white", display: "block" }}
+                  >
+                    {page[0]}
+                  </Button>
+                </Link>
               ))}
             </Box>
             {isLogin ? (

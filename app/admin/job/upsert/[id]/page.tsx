@@ -3,6 +3,8 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { Button, Container, TextField } from "@mui/material";
 import IdFormUpsert from "@/components/_admin/job/IdFormUpsert";
+import Link from "next/link";
+import { FaArrowLeft } from "react-icons/fa";
 
 export default function IdUpsertJob() {
   
@@ -16,6 +18,11 @@ export default function IdUpsertJob() {
               <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                 Upsert Job
               </Typography>
+              <Link href="/admin/job">
+                <Button variant="text" color="primary">
+                  <FaArrowLeft />
+                </Button>
+              </Link>
             </div>
             <IdFormUpsert />
           </Paper>

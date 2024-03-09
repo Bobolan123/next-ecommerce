@@ -10,14 +10,10 @@ import dynamic from "next/dynamic";
 import { IJob } from "@/type";
 import { deleteJob } from "./actions/jobServerAction";
 import { toast } from "react-toastify";
+import { GoPencil } from "react-icons/go";
+import Link from "next/link";
 
 export default function JobTable(props: any) {
-
-  console.log(props.jobs)
-  const UpdateJobButton = dynamic(() => import("./updateJob.button"), {
-    ssr: false,
-  });
-
   const handleDeleteJob = async (id: number) => {
     try {
       await deleteJob(id);
@@ -35,16 +31,18 @@ export default function JobTable(props: any) {
             key={job.id}
             sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
           >
-            <TableCell component="th" scope="job"> 
+            <TableCell component="th" scope="job">
               {job.id}
             </TableCell>
-            <TableCell>
-              {job.name}
-            </TableCell>
+            <TableCell>{job.name}</TableCell>
             <TableCell>{job.created_at}</TableCell>
             <TableCell>{job.updated_at}</TableCell>
             <TableCell className="flex">
-              <UpdateJobButton id={job.id} />
+              <Link href={`/admin/job/upsert/${job.id}`}>
+                <Button className="">
+                  <GoPencil style={{ color: "darkorange" }} size={20} />
+                </Button>
+              </Link>
               <Button
                 className="m-0"
                 onClick={() => {
