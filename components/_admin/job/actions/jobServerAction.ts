@@ -4,6 +4,7 @@ import { revalidateTag } from "next/cache";
 import { IAllJob, IUpdateJob } from "@/type";
 
 export async function fetchCreateJob(data: any) {
+  console.log(data)
   const res = await fetch(`${process.env.API}/job/create`, {
     headers: {
       "Content-Type": "application/json",
@@ -12,7 +13,7 @@ export async function fetchCreateJob(data: any) {
     body: JSON.stringify(data),
   });
 
-  revalidateTag("jobs");
+  // revalidateTag("skills");
   const newJob: IAllJob = await res.json();
   return newJob.data;
 }

@@ -1,3 +1,4 @@
+//Company
 export interface ICompany {
     id: number;
     name: string;
@@ -31,6 +32,7 @@ export interface IAllCompany {
 }
 
 
+//JOB
 export interface IAllJob {
     statusCode: number;
     message: string;
@@ -66,6 +68,7 @@ export interface IJob {
 }
 
   
+// RESUME
 export interface IResume {
     id: number;
     status: string;
@@ -86,12 +89,17 @@ export interface IRole {
 
 }
 
+
+
+// API
 export interface IApi {
     id: number;
     endpoint: string;
     description: string;
 }
 
+
+// USER
 export interface IUser {
     id: number;
     name: string;
@@ -125,11 +133,18 @@ export interface IUpdateUser {
     data: IUser;
 }
 
+
+// SKILL
 export interface ISkill {
     id: number;
     name: string;
     skills: IJob[]
 }
 
+export interface IReadSkills {
+    statusCode: number;
+    message: string;
+    data: ISkill[];
+}
 
 
