@@ -2,8 +2,28 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { Button, Container, TextField } from "@mui/material";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-export default function Dashboard() {
+interface IJwt {
+  id: number;
+  email: string;
+  role: string;
+}
+export default async function Dashboard() {
+  const cookieStore = cookies();
+  const jwt = cookieStore.get("jwt");
+  const res = await fetch(`${process.env.API}/auth/profile/`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${jwt?.value}`,
+    },
+  });
+  const user: IJwt = await res.json();
+  if (user?.role !== "admin" && user?.role !== "hr") {
+    redirect("/")
+  }
+
   return (
     <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
       <Grid container spacing={3}>

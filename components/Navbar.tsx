@@ -15,9 +15,10 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { deleteCookie, getCookie } from "cookies-next";
 
 const NoSSR = dynamic(() => import("./_profile/modelProfile/ModelProfile"), {
   ssr: false,
@@ -32,6 +33,8 @@ const pages = [
 const settings = ["Profile", "Dashboard", "Logout"];
 
 function ResponsiveAppBar() {
+  const [isLogin, setIsLogin] = useState(false)
+  
   const [openProfile, setOpenProfile] = useState(false);
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -64,16 +67,26 @@ function ResponsiveAppBar() {
     if (titleProfile === "Dashboard") {
     }
     if (titleProfile === "Logout") {
+      deleteCookie("jwt");
+      setIsLogin(false)
     }
   };
 
   const handlePopDownProfile = () => {
     setOpenProfile(false);
   };
+
+  useEffect(() => {
+    const jwt = getCookie("jwt");
+    if (jwt) {
+      setIsLogin(true)
+    } else {
+      setIsLogin(false)
+    }
+  }, [])
   return (
     <div>
       <ToastContainer />
-      
       <AppBar position="static">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
@@ -162,40 +175,47 @@ function ResponsiveAppBar() {
                 </Button>
               ))}
             </Box>
-            {/* <Link href={"/login"} className="text-xl">Login</Link>  */}
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <p className="text-white">Profile</p>
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">
-                      <Button onClick={() => handleLogOut(setting)}>
-                        {setting}
-                      </Button>
-                    </Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
+            {isLogin ? (
+              <Box sx={{ flexGrow: 0 }}>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <p className="text-white">Profile</p>
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  {settings.map((setting) => (
+                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                      <Typography textAlign="center">
+                        <Button onClick={() => handleLogOut(setting)}>
+                          {setting}
+                        </Button>
+                      </Typography>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </Box>
+            ) : (
+              <Box>
+                <Link href={"/login"} className="text-xl ">
+                  Login
+                </Link>
+              </Box>
+            )}
           </Toolbar>
         </Container>
       </AppBar>

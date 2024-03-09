@@ -18,13 +18,18 @@ import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { IUserRes } from "@/type";
+import { getCookie } from "cookies-next";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function SignUp() {
   const router = useRouter();
+  const jwt = getCookie('jwt'); // => 'value'
 
+  if (jwt) {
+    router.back()
+  }
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);

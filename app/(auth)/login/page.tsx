@@ -17,7 +17,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { loginAuth } from "./actions/loginActions";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { setCookie } from 'cookies-next';
+import { getCookie, setCookie } from 'cookies-next';
+import { useRouter } from "next/navigation";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme({
@@ -33,6 +34,12 @@ const defaultTheme = createTheme({
 });
 
 export default function SignIn() {
+  const router = useRouter();
+  const jwt = getCookie('jwt'); // => 'value'
+
+  if (jwt) {
+    router.back()
+  }
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -49,7 +56,7 @@ export default function SignIn() {
         if (jwt) {
           toast.success("Success");
           setCookie('jwt', jwt.access_token);
-
+          router.back()
         } else {
           toast.error("Email or password are false");
         }

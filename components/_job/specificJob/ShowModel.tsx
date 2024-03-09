@@ -1,23 +1,32 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Input, Modal, Typography } from "antd";
+import { getCookie } from "cookies-next";
+import Link from "next/link";
 
 interface ShowModelProps {
   isModalOpen: boolean;
   showModel: () => void;
 }
 
-const ShowModel: React.FC<ShowModelProps> = (props: any) => {
+const ShowModel: React.FC<ShowModelProps> = (props) => {
+  const [isLogin, setIsLogin] = useState(false);
+
+  useEffect(() => {
+    const jwt = getCookie("jwt");
+    setIsLogin(!!jwt); // Simplified setting of isLogin based on jwt existence
+  }, []);
+
   const handleOkorCancel = () => {
     props.showModel();
   };
 
-  return (
+  return isLogin ? (
     <Modal
-      okButtonProps={{ style: { backgroundColor: '#1677ff' } }} 
+      okButtonProps={{ style: { backgroundColor: "#1677ff" } }}
       title="Applying Form"
-      open={props.isModalOpen}
+      visible={props.isModalOpen} // Changed from "open" to "visible"
       onOk={handleOkorCancel}
       onCancel={handleOkorCancel}
       okText="Apply"
@@ -27,6 +36,23 @@ const ShowModel: React.FC<ShowModelProps> = (props: any) => {
       <Typography>Email:</Typography>
       <Input className="mb-10" prefix="from server" disabled />
       <Typography>Upload file CV:</Typography>
+    </Modal>
+  ) : (
+    <Modal
+      okButtonProps={{ style: { backgroundColor: "#1677ff" } }}
+      title="Applying Form"
+      visible={props.isModalOpen} // Changed from "open" to "visible"
+      onOk={handleOkorCancel}
+      onCancel={handleOkorCancel}
+      okText="Ok"
+    >
+      <div className="flex items-center justify-center">
+        <Link href={"/login"} className="btn">
+          <Button type="link" danger className="px-4 py-2 rounded-lg text-lg">
+            Login now
+          </Button>
+        </Link>
+      </div>
     </Modal>
   );
 };

@@ -1,18 +1,20 @@
 'use client'
 
 import { Button } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ShowModel from "./ShowModel";
 
 export default function ApplyButton(props: any) {
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  
   const showModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
   return (
     <>
+      
       <Button
         type="submit"
         fullWidth

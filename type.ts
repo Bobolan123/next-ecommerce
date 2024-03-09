@@ -54,8 +54,16 @@ export interface IJob {
       },
       location: string
     }
+    created_at: string;
+    updated_at: string;
+
   }
   
+  export interface IUpdateJob {
+    statusCode: number;
+    message: string;
+    data: IJob;
+}
 
   
 export interface IResume {
@@ -116,3 +124,12 @@ export interface IUpdateUser {
     message: string;
     data: IUser;
 }
+
+export interface ISkill {
+    id: number;
+    name: string;
+    skills: IJob[]
+}
+
+
+
