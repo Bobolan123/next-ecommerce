@@ -18,6 +18,7 @@ import { toast } from "react-toastify";
 import { DownOutlined } from "@ant-design/icons";
 import dynamic from "next/dynamic";
 import { ICompany, ISkill } from "@/type";
+import { useRouter } from 'next/navigation'
 
 interface IProps {
   skills: ISkill[];
@@ -25,6 +26,7 @@ interface IProps {
 }
 
 const FormUpsert = (props: IProps) => {
+  const router = useRouter()
   const [name, setName] = useState("");
   const [selectedSkillIds, setSelectedSkillIds] = useState<number[]>([]);
   const [location, setLocation] = useState("");
@@ -68,6 +70,7 @@ const FormUpsert = (props: IProps) => {
         startDate,
         endDate,
         status: isActive,
+        description: text,
       };
 
       // Create job
@@ -75,6 +78,7 @@ const FormUpsert = (props: IProps) => {
       if (job) {
         // Display success message
         toast.success("Job created successfully.");
+        router.back()
       } else {
         toast.error("Job creation failed.");
       }
@@ -98,10 +102,7 @@ const FormUpsert = (props: IProps) => {
     source: any,
     editor: any
   ) {
-    const deltaJson = editor.getContents(); // Get Quill delta
-    const deltaString = JSON.stringify(deltaJson); // Convert delta to JSON string
-  
-    setText(deltaString);
+    setText(content);
   }
 
   return (

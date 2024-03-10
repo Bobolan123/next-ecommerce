@@ -43,11 +43,15 @@ export interface IJob {
     id: number;
     name: string;
     description: string;
-    skills: string[]; // Assuming skills is an array of strings
+    skills: ISkill[]; // Assuming skills is an array of strings
     count: number;
-    status: string;
+    status: boolean;
     salary: number;
-    timeDifference:string
+    timeDifference:string;
+    location:string;
+    level:string
+    startDate: string,
+    endDate:string,
     company: {
       id:number,
       logo: {

@@ -5,26 +5,11 @@ import { Button, Container, Link, TextField } from "@mui/material";
 import FormUpsert from "@/components/_admin/job/formUpsert";
 import { FaArrowLeft } from "react-icons/fa";
 import { IAllCompany, IAllJob, IReadSkills, ISkill } from "@/type";
+import { fetchAllCompanies, fetchAllSkill } from "@/components/_admin/job/actions/jobServerAction";
 
 export default async function UpsertJob() {
-  const fetchAllSkills = await fetch(
-    `${process.env.API}/skills/read`,
-    {
-      method: "GET",
-      next: { tags: ["skills"] },
-    }
-  );
-  let skills:IReadSkills = await fetchAllSkills.json();
-  
-  const fetchAllCompanies = await fetch(
-    `${process.env.API}/company/readCompanies`,
-    {
-      method: "GET",
-      next: { tags: ["list-companies"] },
-    }
-  );
-  let fetchCompanies: IAllCompany = await fetchAllCompanies.json();
-  const companies = fetchCompanies.data;
+  const skills = await fetchAllSkill()
+  const companies = await fetchAllCompanies()
   return (
     <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
       <Grid container spacing={3}>
@@ -42,7 +27,7 @@ export default async function UpsertJob() {
               </Link>
             </div>
 
-            <FormUpsert skills = {skills?.data} companies = {companies}/>
+            <FormUpsert skills = {skills} companies = {companies}/>
 
           </Paper>
         </Grid>
