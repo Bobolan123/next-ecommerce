@@ -54,6 +54,7 @@ export interface IJob {
     endDate:string,
     company: {
       id:number,
+      name:string,
       logo: {
           type: string,
           data: number[],
@@ -79,9 +80,18 @@ export interface IResume {
     created_at: string;
     updated_at: string;
     user: IUser;
-    job: any;
+    job: IJob;
+    
 }
 
+export interface IReadResumes {
+    statusCode: number;
+    message: string;
+    data: IResume[];
+}
+
+
+// ROLE
 export interface IRole {
     id: number;
     name: string;
@@ -150,5 +160,6 @@ export interface IReadSkills {
     message: string;
     data: ISkill[];
 }
+
 
 

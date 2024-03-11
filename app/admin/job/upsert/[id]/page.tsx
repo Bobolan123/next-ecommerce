@@ -1,7 +1,7 @@
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import { Button, Container, TextField } from "@mui/material";
+import { Button, Container } from "@mui/material";
 import IdFormUpsert from "@/components/_admin/job/IdFormUpsert";
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
@@ -10,8 +10,9 @@ import { fetchAllCompanies, fetchAllSkill } from "@/components/_admin/job/action
 
 export default async function IdUpsertJob(props:any) {
   const {params} = props
-  const fetchJob = await fetch(`${process.env.API}/job/readJob/${params.id}`, {
+  const fetchJob = await fetch(`http://localhost:3001/api/job/readJob/${params.id}`, {
     next: { tags: ["jobId"] },
+    method:"GET"
   });
   const job: IJob = await fetchJob.json();
   const skills = await fetchAllSkill()
