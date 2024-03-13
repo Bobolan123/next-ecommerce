@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Select } from "antd";
 import "react-quill/dist/quill.snow.css";
 import Table from "@mui/material/Table";
@@ -11,30 +11,37 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Button } from "@mui/material";
-
-const row = {
-  email: "lan",
-  status: "PENDING",
-  job: "react",
-  companyName: "tiktok",
-  createdDate: "12/2/23",
-  updatedDate: "12/31/24",
-};
+import { IResume } from "@/type";
+import { fetchUpdateResume } from "./actions/resumeServerAction";
+import { toast } from "react-toastify";
 
 interface IModelResumeProps {
-  id:any
+  resume: IResume;
 }
 
-const ResumeModel: React.FC<IModelResumeProps> = (props: any) => {
-  const [value, setValue] = useState("");
+const ResumeModel: React.FC<IModelResumeProps> = (props: IModelResumeProps) => {
+  const [resume, setResume] = useState(props.resume);
+  const [status, setStatus] = useState("");
+
   const [isOpenResumeModel, setIsOpenResumeModel] = useState(false);
 
-  const handleResumeModel = () => {
+  const handleResumeModel = async () => {
     setIsOpenResumeModel(!isOpenResumeModel);
   };
-  const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
+
+  const handleOk = async () => {
+    const res = await fetchUpdateResume({ status }, props.resume.id);
+    if (res.statusCode === 200) {
+      toast.success(res.message);
+    } else {
+      toast.error(res.message);
+    }
+    handleResumeModel()
   };
+  const handleChangeStatus = (value: string) => {
+    setStatus(value);
+  };
+
   return (
     <div>
       <Button variant="contained" onClick={handleResumeModel}>
@@ -42,11 +49,11 @@ const ResumeModel: React.FC<IModelResumeProps> = (props: any) => {
       </Button>
       <Modal
         okButtonProps={{ style: { backgroundColor: "#1677ff" } }}
-        title="Resume Information adsf"
+        title="Resume Information"
         centered
         okText="Change Status"
         open={isOpenResumeModel}
-        onOk={() => handleResumeModel()}
+        onOk={() => handleOk()}
         onCancel={() => handleResumeModel()}
         style={{ maxWidth: "calc(100% - 320px)", marginLeft: "160px" }}
       >
@@ -64,12 +71,12 @@ const ResumeModel: React.FC<IModelResumeProps> = (props: any) => {
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  {row.email}
+                  {resume.user.email}
                 </TableCell>
                 <TableCell align="center">
                   <Select
-                    defaultValue="admin"
-                    onChange={handleChange}
+                    defaultValue={resume.status}
+                    onChange={handleChangeStatus}
                     options={[
                       { value: "pending", label: "PENDING" },
                       { value: "reviewing", label: "REVIEWING" },
@@ -84,13 +91,13 @@ const ResumeModel: React.FC<IModelResumeProps> = (props: any) => {
                 <TableCell component="th" scope="row">
                   Job Name
                 </TableCell>
-                <TableCell align="center">Resume Name</TableCell>
+                <TableCell align="center">Company Name</TableCell>
               </TableRow>
               <TableRow key="email">
                 <TableCell component="th" scope="row">
-                  {row.job}
+                  {resume.job.name}
                 </TableCell>
-                <TableCell align="center">{row.companyName}</TableCell>
+                <TableCell align="center">{resume.job.company.name}</TableCell>
               </TableRow>
               <TableRow key="email" className="bg-slate-200">
                 <TableCell component="th" scope="row">
@@ -100,9 +107,9 @@ const ResumeModel: React.FC<IModelResumeProps> = (props: any) => {
               </TableRow>
               <TableRow key="email">
                 <TableCell component="th" scope="row">
-                  {row.createdDate}
+                  {resume.created_at}
                 </TableCell>
-                <TableCell align="center">{row.updatedDate}</TableCell>
+                <TableCell align="center">{resume.updated_at}</TableCell>
               </TableRow>
             </TableBody>
           </Table>

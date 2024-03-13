@@ -3,18 +3,14 @@
 import { revalidateTag } from "next/cache";
 import { IAllCompany, IAllJob, IReadSkills, IUpdateJob } from "@/type";
 
-
 export async function fetchAllSkill() {
-  const fetchAllSkills = await fetch(
-    `${process.env.API}/skills/read`,
-    {
-      method: "GET",
-      next: { tags: ["skills"] },
-      cache: 'force-cache' 
-    }
-  );
-  let skills:IReadSkills = await fetchAllSkills.json();
-  return skills.data
+  const fetchAllSkills = await fetch(`${process.env.API}/skills/read`, {
+    method: "GET",
+    next: { tags: ["skills"] },
+    cache: "force-cache",
+  });
+  let skills: IReadSkills = await fetchAllSkills.json();
+  return skills.data;
 }
 
 export async function fetchAllCompanies() {
@@ -27,11 +23,11 @@ export async function fetchAllCompanies() {
   );
   let fetchCompanies: IAllCompany = await fetchAllCompanies.json();
   const companies = fetchCompanies.data;
-  return companies
+  return companies;
 }
 
 export async function fetchCreateJob(data: any) {
-    const res = await fetch(`${process.env.API}/job/create`, {
+  const res = await fetch(`${process.env.API}/job/create`, {
     headers: {
       "Content-Type": "application/json",
     },
@@ -39,14 +35,12 @@ export async function fetchCreateJob(data: any) {
     body: JSON.stringify(data),
   });
 
-
   revalidateTag("skills");
   const newJob: IAllJob = await res.json();
   return newJob.data;
 }
 
 export async function fetchUpdateJob(data: any, id: any) {
-
   const res = await fetch(`${process.env.API}/job/update/${id}`, {
     headers: {
       "Content-Type": "application/json",
@@ -65,14 +59,14 @@ export const deleteJob = async (id: number) => {
     method: "DELETE",
   });
 
-  revalidateTag('jobs')
+  revalidateTag("jobs");
 };
 
 export const fetchJobById = async (id: number) => {
   const data = await fetch(`http://localhost:3001/api/job/read/${id}`, {
     method: "GET",
   });
-  const job = await data.json()
-  
-  return job.data
+  const job = await data.json();
+
+  return job.data;
 };

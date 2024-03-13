@@ -17,7 +17,6 @@ const ResumeModel = dynamic(
 
 export default async function Resume() {
   const resumes:IResume[] = await fetchAllResumes()
-  console.log(resumes)
   return (
     <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
       <Grid container spacing={3}>

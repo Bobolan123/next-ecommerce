@@ -48,7 +48,7 @@ export default async function SpecificJob(props: any) {
             {job.name}
           </Typography>
 
-          <ApplyButton />
+          <ApplyButton job = {job}/>
 
           <Typography variant="subtitle1">
             <CiDollar className="inline mr-1" />

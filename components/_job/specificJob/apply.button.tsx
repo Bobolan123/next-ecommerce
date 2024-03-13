@@ -3,8 +3,12 @@
 import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import ShowModel from "./ShowModel";
+import { IJob } from "@/type";
 
-export default function ApplyButton(props: any) {
+interface IApplyButtonProps {
+  job:IJob
+}
+export default function ApplyButton(props: IApplyButtonProps) {
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   
@@ -25,7 +29,7 @@ export default function ApplyButton(props: any) {
       >
         Apply now
       </Button>
-      {isModalOpen && <ShowModel isModalOpen={isModalOpen} showModel = {showModal}/>}
+      {isModalOpen && <ShowModel isModalOpen={isModalOpen} showModel = {showModal} job = {props.job}/>}
     </>
   );
 }

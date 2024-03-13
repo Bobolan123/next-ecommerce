@@ -179,11 +179,12 @@ function ResponsiveAppBar() {
             </Box>
             {isLogin ? (
               <Box sx={{ flexGrow: 0 }}>
-                <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Tooltip title="Open settings">
                     <p className="text-white">Profile</p>
-                  </IconButton>
-                </Tooltip>
+                  </Tooltip>
+                </IconButton>
+
                 <Menu
                   sx={{ mt: "45px" }}
                   id="menu-appbar"

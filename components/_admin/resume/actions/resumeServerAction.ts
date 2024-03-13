@@ -43,7 +43,7 @@ export async function fetchUpdateResume(data: any, id: any) {
     body: JSON.stringify(data),
   });
 
-  revalidateTag("resumeId");
+  revalidateTag("resumes");
   const newResume = await res.json();
   return newResume;
 }
