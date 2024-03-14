@@ -166,15 +166,13 @@ function ResponsiveAppBar() {
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {pages.map((page) => (
-                <Link href={`/${page[1].toLowerCase()}`}>
-                  <Button
-                    key={page[1]}
-                    onClick={handleCloseNavMenu}
-                    sx={{ my: 2, color: "white", display: "block" }}
-                  >
-                    {page[0]}
-                  </Button>
-                </Link>
+                <Button
+                  key={page[1]}
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  <Link href={`/${page[1].toLowerCase()}`}>{page[0]}</Link>
+                </Button>
               ))}
             </Box>
             {isLogin ? (

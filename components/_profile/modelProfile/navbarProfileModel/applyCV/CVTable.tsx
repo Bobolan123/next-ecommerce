@@ -1,23 +1,24 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Space, Table, Tag } from "antd";
+import { Table } from "antd";
 import type { TableProps } from "antd";
 import { fetchAllResumes } from "@/components/_admin/resume/actions/resumeServerAction";
+import { endcodeJWT } from "@/components/actions/serverActionAll";
 
 interface DataType {
-  key: string;
+  id: number;
+  company: string;
   name: string;
-  age: number;
-  address: string;
-  tags: string[];
+  status: string;
+  date: string;
 }
 
 const columns: TableProps<DataType>["columns"] = [
   {
-    title: "No",
-    dataIndex: "key",
-    key: "no",
+    title: "Id",
+    dataIndex: "id",
+    key: "id",
     render: (text) => <a>{text}</a>,
   },
   {
@@ -38,39 +39,40 @@ const columns: TableProps<DataType>["columns"] = [
   {
     title: "Date",
     key: "date",
+    dataIndex: "date",
   },
 ];
 
-const data: DataType[] = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-    tags: ["nice", "developer"],
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-    tags: ["loser"],
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sydney No. 1 Lake Park",
-    tags: ["cool", "teacher"],
-  },
-];
+const TableCV: React.FC = (props: any) => {
+  const [resume, setResume] = useState<DataType[]>([]);
 
-const TableCV: React.FC = () => {
-  
-  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const user = await endcodeJWT();
+        const response = await fetch(
+          `http://localhost:3001/api/user/read/cv/${user.id}`
+        );
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setResume(data.data);
+      } catch (error) {
+        throw new Error(`Error fetching data:${error}`);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <>
-      <Table columns={columns} dataSource={data} pagination={false} />;
+      <Table
+        columns={columns}
+        dataSource={resume}
+        pagination={{ pageSize: 5 }}
+      />
     </>
   );
 };
