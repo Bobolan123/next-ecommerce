@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Table } from "antd";
+import { Button, Table } from "antd";
 import type { TableProps } from "antd";
-import { fetchAllResumes } from "@/components/_admin/resume/actions/resumeServerAction";
 import { endcodeJWT } from "@/components/actions/serverActionAll";
+import { toast } from "react-toastify";
 
 interface DataType {
   id: number;
@@ -12,7 +12,16 @@ interface DataType {
   name: string;
   status: string;
   date: string;
+  cvFile: string; // Add cvFile property
 }
+
+const handleOpenPdf = (cvFile: string) => {
+  if (cvFile) {
+    window.open(`http://localhost:8080/asset/resumes/${cvFile}`, "_blank");
+  } else {
+    toast.error("Not found pdf CV");
+  }
+};
 
 const columns: TableProps<DataType>["columns"] = [
   {
@@ -41,9 +50,26 @@ const columns: TableProps<DataType>["columns"] = [
     key: "date",
     dataIndex: "date",
   },
+  {
+    title: "",
+    key: "detail",
+    dataIndex: "detail",
+    render: (_, record) => (
+      <Button
+        type="primary"
+        onClick={() => handleOpenPdf(record.cvFile)}
+        style={{
+          backgroundColor:"#1890ff",
+          borderColor: "#1890ff",
+        }}
+      >
+        Detail
+      </Button>
+    ),
+  },
 ];
 
-const TableCV: React.FC = (props: any) => {
+const TableCV: React.FC = () => {
   const [resume, setResume] = useState<DataType[]>([]);
 
   useEffect(() => {
@@ -56,8 +82,11 @@ const TableCV: React.FC = (props: any) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        const data = await response.json();
-        setResume(data.data);
+        let data = await response.json();
+        const updatedArray = data.data.map((item: DataType) => {
+          return { ...item, detail: "Detail" };
+        });
+        setResume(updatedArray);
       } catch (error) {
         throw new Error(`Error fetching data:${error}`);
       }

@@ -81,7 +81,7 @@ export interface IResume {
     updated_at: string;
     user: IUser;
     job: IJob;
-    
+    cvFile:string
 }
 
 export interface IReadResumes {
