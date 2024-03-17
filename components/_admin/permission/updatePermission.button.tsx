@@ -4,17 +4,24 @@ import React, { useState } from "react";
 import { Modal, Select } from "antd";
 import { Form, Input } from "antd";
 import { Button } from "@mui/material";
-import { fetchCreateApi } from "./actions/permissionServerAction";
+import { fetchUpdateApi } from "./actions/permissionServerAction";
 import { toast } from "react-toastify";
+import { IApi } from "@/type";
+import { GoPencil } from "react-icons/go";
 
-interface IModelApiProps {}
+interface IModelApiProps {
+  api: IApi;
+}
 
-const PermissionModel: React.FC<IModelApiProps> = (props: any) => {
+const UpdatePermissionModel: React.FC<IModelApiProps> = (
+  props: IModelApiProps
+) => {
+  const { api } = props;
   const [formData, setFormData] = useState({
-    description: "",
-    endpoint: "",
-    method: "",
-    module: ""
+    description: api.description,
+    endpoint: api.endpoint,
+    method: api.method,
+    module: api.module,
   });
 
   const [isOpenApiModel, setIsOpenApiModel] = useState(false);
@@ -23,17 +30,19 @@ const PermissionModel: React.FC<IModelApiProps> = (props: any) => {
     setIsOpenApiModel(!isOpenApiModel);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
   };
 
   const handleOk = async () => {
-    const res = await fetchCreateApi(formData); // Pass formData to API call
-    if (res?.statusCode === 201) {
+    const res = await fetchUpdateApi(formData, api.id); // Pass formData to API call
+    if (res?.statusCode === 200) {
       toast.success(res.message);
       handleApiModel();
     } else {
@@ -43,7 +52,9 @@ const PermissionModel: React.FC<IModelApiProps> = (props: any) => {
 
   return (
     <div>
-      <Button onClick={handleApiModel} variant="contained">Create</Button>
+      <Button onClick={handleApiModel}>
+        <GoPencil style={{ color: "darkorange" }} size={20} />
+      </Button>
       <Modal
         okButtonProps={{ style: { backgroundColor: "#1677ff" } }}
         title="Create new Api"
@@ -57,16 +68,41 @@ const PermissionModel: React.FC<IModelApiProps> = (props: any) => {
       >
         <Form name="validateOnly" layout="vertical" autoComplete="off">
           <div className="grid grid-cols-2 gap-4">
-            <Form.Item name="description" label="Description" rules={[{ required: true }]}>
-              <Input name="description" value={formData.description} onChange={handleChange} />
+            <Form.Item
+              name="description"
+              label="Description"
+              rules={[{ required: true }]}
+            >
+              <Input
+                name="description"
+                defaultValue={api.description}
+                value={formData.description}
+                onChange={handleChange}
+              />
             </Form.Item>
-            <Form.Item name="endpoint" label="Endpoint" rules={[{ required: true }]}>
-              <Input name="endpoint" value={formData.endpoint} onChange={handleChange} />
+            <Form.Item
+              name="endpoint"
+              label="Endpoint"
+              rules={[{ required: true }]}
+            >
+              <Input
+                name="endpoint"
+                defaultValue={api.endpoint}
+                value={formData.endpoint}
+                onChange={handleChange}
+              />
             </Form.Item>
-            <Form.Item name="method" label="Method" rules={[{ required: true }]}>
+            <Form.Item
+              name="method"
+              label="Method"
+              rules={[{ required: true }]}
+            >
               <Select
                 placeholder="Select Method"
-                onChange={(value) => setFormData({ ...formData, method: value })}
+                defaultValue={api.method}
+                onChange={(value) =>
+                  setFormData({ ...formData, method: value })
+                }
                 value={formData.method}
                 options={[
                   { value: "get", label: "GET" },
@@ -76,10 +112,17 @@ const PermissionModel: React.FC<IModelApiProps> = (props: any) => {
                 ]}
               />
             </Form.Item>
-            <Form.Item name="module" label="Module" rules={[{ required: true }]}>
+            <Form.Item
+              name="module"
+              label="Module"
+              rules={[{ required: true }]}
+            >
               <Select
+                defaultValue={api.module}
                 placeholder="Select Module"
-                onChange={(value) => setFormData({ ...formData, module: value })}
+                onChange={(value) =>
+                  setFormData({ ...formData, module: value })
+                }
                 value={formData.module}
                 options={[
                   { value: "auth", label: "AUTH" },
@@ -101,4 +144,4 @@ const PermissionModel: React.FC<IModelApiProps> = (props: any) => {
   );
 };
 
-export default PermissionModel;
+export default UpdatePermissionModel;

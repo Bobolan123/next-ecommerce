@@ -1,27 +1,23 @@
-"use client";
-
 import * as React from "react";
 import { styled } from "@mui/material/styles";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { Button, Container, TextField } from "@mui/material";
-import CompanyTable from "@/components/_admin/company/companyTable";
 import { useState } from "react";
 import dynamic from "next/dynamic";
+import PermissionTable from "@/components/_admin/permission/permissionTable";
+import { fetchAllApi } from "@/components/_admin/permission/actions/permissionServerAction";
+import { IApi } from "@/type";
 
 const PermissionModel = dynamic(
   () => import("../../../components/_admin/permission/permissionModel"),
   { ssr: false }
 );
 
-export default function Permission() {
-  const [isOpenPermissionModel, setIsOpenPermissionModel] = useState(false);
+export default async function Permission() {
+  const permissions: IApi[] = await fetchAllApi();
 
-  const handlePermissionModel = () => {
-    setIsOpenPermissionModel(!isOpenPermissionModel);
-  };
   return (
     <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
       <Grid container spacing={3}>
@@ -61,17 +57,11 @@ export default function Permission() {
           <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
             <div className="flex justify-between mb-5">
               <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-                List of companies
+                List of Permissions
               </Typography>
-              <Button variant="contained" onClick={handlePermissionModel}>
-                Add
-              </Button>
+              <PermissionModel />
             </div>
-            <PermissionModel
-              isOpenPermissionModel={isOpenPermissionModel}
-              handlePermissionModel={handlePermissionModel}
-            />
-            <CompanyTable />
+            <PermissionTable apis={permissions} />
           </Paper>
         </Grid>
       </Grid>

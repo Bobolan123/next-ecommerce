@@ -110,6 +110,10 @@ export interface IApi {
     id: number;
     endpoint: string;
     description: string;
+    module: string;
+    method: string;
+    created_at:string
+    updated_at: string;
 }
 
 
@@ -161,5 +165,20 @@ export interface IReadSkills {
     data: ISkill[];
 }
 
+
+// API
+export interface IApi {
+    id: number;
+    endpoint:string
+    description:string
+    module: string;
+    method: string;
+}
+
+export interface IReadPermission {
+    statusCode: number;
+    message: string;
+    data: IApi[];
+}
 
 
