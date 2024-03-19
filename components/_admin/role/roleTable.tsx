@@ -14,6 +14,10 @@ import UpdatePermissionModel from "./updateRole.button";
 
 interface IPermission {
   roles: IRole[] | [];
+  apis: {
+    module: string;
+    endpoints: IApi[];
+  }[];
 }
 export default function PermissionTable(props: IPermission) {
   return (
@@ -43,7 +47,7 @@ export default function PermissionTable(props: IPermission) {
               <TableCell align="left">{role.created_at}</TableCell>
               <TableCell align="left">{role.updated_at}</TableCell>
               <TableCell className="flex">
-                <UpdatePermissionModel role={role} />
+                <UpdatePermissionModel role={role} apis={props.apis}/>
                 <DeletePermission id={+role.id} />
               </TableCell>{" "}
             </TableRow>

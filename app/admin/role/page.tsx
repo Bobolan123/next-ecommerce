@@ -64,7 +64,7 @@ export default async function Role() {
               </Typography>
               <RoleModel apis={apiForRole} />
             </div>
-            <RoleTable roles={roles} />
+            <RoleTable roles={roles} apis={apiForRole}/>
           </Paper>
         </Grid>
       </Grid>
