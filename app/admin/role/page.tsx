@@ -1,27 +1,26 @@
-"use client";
-
 import * as React from "react";
 import { styled } from "@mui/material/styles";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { Button, Container, TextField } from "@mui/material";
-import CompanyTable from "@/components/_admin/company/companyTable";
 import { useState } from "react";
 import dynamic from "next/dynamic";
+import RoleTable from "@/components/_admin/role/roleTable";
+import {
+  fetchAllRole,
+  fetchApiForRole,
+} from "@/components/_admin/role/actions/roleServerAction";
+import { IApi, IRole } from "@/type";
 
 const RoleModel = dynamic(
   () => import("../../../components/_admin/role/roleModel"),
   { ssr: false }
 );
 
-export default function Company() {
-  const [isOpenRoleModel, setIsOpenRoleModel] = useState(false);
-
-  const handleRoleModel = () => {
-    setIsOpenRoleModel(!isOpenRoleModel);
-  };
+export default async function Role() {
+  const roles: IRole[] = await fetchAllRole();
+  const apiForRole = await fetchApiForRole();
   return (
     <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
       <Grid container spacing={3}>
@@ -61,17 +60,11 @@ export default function Company() {
           <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
             <div className="flex justify-between mb-5">
               <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-                List of companies
+                List of Roles
               </Typography>
-              <Button variant="contained" onClick={handleRoleModel}>
-                Add
-              </Button>
+              <RoleModel apis={apiForRole} />
             </div>
-            <RoleModel
-              isOpenRoleModel={isOpenRoleModel}
-              handleRoleModel={handleRoleModel}
-            />
-            <CompanyTable />
+            <RoleTable roles={roles} />
           </Paper>
         </Grid>
       </Grid>

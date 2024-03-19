@@ -1,69 +1,134 @@
-"use client";
+'use client'
 
 import React, { useState } from "react";
-import { Modal, Switch } from "antd";
+import { Modal, Switch, Typography } from "antd";
 import { Form, Input } from "antd";
-import TextArea from "antd/es/input/TextArea";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import { Button } from "@mui/material";
+import { fetchCreateRole } from "./actions/roleServerAction";
+import { toast } from "react-toastify";
+import Title from "antd/es/typography/Title";
+import { IApi } from "@/type";
 
-interface IModelCompanyProps {
-  isOpenRoleModel: boolean;
-  handleRoleModel: () => void;
+interface IModelRoleProps {
+  apis: {
+    module: string;
+    endpoints: IApi[];
+  }[];
 }
 
-const RoleModel: React.FC<IModelCompanyProps> = (props: any) => {
-  const [value, setValue] = useState("");
+const RoleModel: React.FC<IModelRoleProps> = (props: IModelRoleProps) => {
+  const [formData, setFormData] = useState({
+    description: "",
+    name: "",
+  });
 
-  const [form] = Form.useForm();
+  const [isOpenRoleModel, setIsOpenRoleModel] = useState(false);
+  const [openModules, setOpenModules] = useState<string[]>([]);
+
+  const handleRoleModel = () => {
+    setIsOpenRoleModel(!isOpenRoleModel);
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleOk = async () => {
+    const res = await fetchCreateRole(formData); // Pass formData to API call
+    if (res?.statusCode === 201) {
+      toast.success(res.message);
+      handleRoleModel();
+    } else {
+      toast.error(res.message);
+    }
+  };
+
+  const handleModuleClick = (module: string) => {
+    setOpenModules(prevState => {
+      if (prevState.includes(module)) {
+        return prevState.filter(item => item !== module);
+      } else {
+        return [...prevState, module];
+      }
+    });
+  };
+
+  const onChangeAllApi = (checked: boolean, e: any) => {
+    console.log(`switch to ${checked}`);
+    e.stopPropagation(); // Stop the propagation of the click event
+  };
 
   return (
     <div>
+      <Button onClick={handleRoleModel} variant="contained">
+        Create
+      </Button>
       <Modal
         okButtonProps={{ style: { backgroundColor: "#1677ff" } }}
-        title="Create new Company"
+        title="Create new Role"
         centered
-        open={props.isOpenRoleModel}
-        onOk={() => props.handleRoleModel()}
-        onCancel={() => props.handleRoleModel()}
+        open={isOpenRoleModel}
+        onOk={handleOk}
+        onCancel={handleRoleModel}
         width={1000}
         className=""
         style={{ maxWidth: "calc(100% - 320px)", marginLeft: "160px" }}
       >
-        <Form
-          form={form}
-          name="validateOnly"
-          layout="vertical"
-          autoComplete="off"
-        >
-          <div className="flex gap-4">
-            <Form.Item name="name" label="Name" rules={[{ required: true }]}>
-              <Input />
-            </Form.Item>
-            <Form.Item name="status" label="Status" rules={[{ required: true }]}>
-              <Switch
-                checkedChildren="active"
-                unCheckedChildren="unactive"
-                defaultChecked
-              />
-            </Form.Item>
-          </div>
+        <Form name="validateOnly" layout="vertical" autoComplete="off">
+          <Form.Item name="name" label="Name" rules={[{ required: true }]}>
+            <Input name="name" value={formData.name} onChange={handleChange} />
+          </Form.Item>
 
           <Form.Item
             name="description"
             label="Description"
             rules={[{ required: true }]}
           >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="location"
-            label="Location"
-            rules={[{ required: false }]}
-          >
-            adsf    
+            <Input
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+            />
           </Form.Item>
         </Form>
+        <div>
+          <p className="mb-6">
+            Permission: The permissions are authorized for this Role
+          </p>
+          <div className="border rounded-lg border-gray-100">
+            {props.apis.map(api => (
+              <div key={api.module}>
+                <div
+                  className="ml-3 mr-3 mt-3 border  rounded-lg bg-gray-100 p-3 flex justify-between "
+                  onClick={() => handleModuleClick(api.module)}
+                >
+                  {" "}
+                  <Title level={3}>{api.module}</Title>
+                  <Switch defaultChecked={openModules.includes(api.module)} onChange={onChangeAllApi} />
+                </div>
+                {openModules.includes(api.module) && (
+                  <div className="m-3 mt-0 border rounded-lg grid grid-cols-2 gap-4 p-6">
+                    {api.endpoints.map(endpoint => (
+                      <div key={endpoint.id} className="m-1 p-3 border rounded-lg flex items-center gap-3">
+                        <Switch defaultChecked onChange={onChangeAllApi} />
+                        <div>
+                          <Typography>{endpoint.description}</Typography>
+                          <Typography>{endpoint.method} {endpoint.endpoint}</Typography>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
       </Modal>
     </div>
   );

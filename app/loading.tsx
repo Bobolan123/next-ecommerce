@@ -1,6 +1,6 @@
-import Skeleton from 'react-loading-skeleton' 
+import { Skeleton } from "antd";
 
 export default function Loading() {
-    // You can add any UI inside Loading, including a Skeleton.
-    return <Skeleton count={5}/>
-  }
+  // You can add any UI inside Loading, including a Skeleton.
+  return <Skeleton />;
+}

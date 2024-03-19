@@ -103,6 +103,11 @@ export interface IRole {
 
 }
 
+export interface IReadAllRole {
+    statusCode: number;
+    message: string;
+    data: IRole[];
+}
 
 
 // API
