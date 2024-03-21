@@ -2,6 +2,8 @@ import React from 'react';
 import { Tabs } from 'antd';
 import type { TabsProps } from 'antd';
 import ApplyCV from './applyCV/ApplyCV';
+import ChangePassword from './changePassword/changePassword';
+import GetJobBySkills from './getJobEmail/getJobBySkills';
 
 const onChange = (key: string) => {
   
@@ -16,7 +18,7 @@ const items: TabsProps['items'] = [
   {
     key: '2',
     label: 'Get job by Email',
-    children: 'Content of Tab Pane 2',
+    children: <GetJobBySkills/>,
   },
   {
     key: '3',
@@ -26,7 +28,7 @@ const items: TabsProps['items'] = [
   {
     key: '4',
     label: 'Change Password',
-    children: 'Content of Tab Pane 3',
+    children: <ChangePassword/>,
   },
 ];
 
