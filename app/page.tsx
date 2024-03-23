@@ -1,11 +1,12 @@
 import ResponsiveAppBar from "@/components/Navbar";
 import CompanyAlbum from "@/components/_home/company.album";
 import JobsAlbum from "@/components/_home/jobs-album";
+import { getJwt } from "@/components/actions/serverActionAll";
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 
 export default async function Home() {
   const fetchCompanies = await fetch(`${process.env.API}/company/readTopCompany`, {
-    method:"GET"
+    method:"GET",
   })
   const companies = await fetchCompanies.json()
 

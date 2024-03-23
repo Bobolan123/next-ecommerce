@@ -1,12 +1,17 @@
 "use server";
 
 import { IAllCompany } from "@/components/_company/type";
+import { getJwt } from "@/components/actions/serverActionAll";
 import { revalidateTag } from "next/cache";
 
 export async function fetchCreateCompany(data: any) {
-  const res = await fetch(`${process.env.API}/company/create`, {
+  const jwt = await getJwt();
+  const res = await fetch(`http://localhost:3001/api/company/create`, {
     method: "POST",
     body: data,
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
   });
 
   revalidateTag("list-companies");

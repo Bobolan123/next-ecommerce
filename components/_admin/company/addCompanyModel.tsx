@@ -26,7 +26,7 @@ const AddCompanyModel: React.FC<IModelCompanyProps> = (props: any) => {
     source: any,
     editor: any
   ) {
-    setText(editor.getContents());
+    setText(content);
   }
 
   const [form] = Form.useForm();

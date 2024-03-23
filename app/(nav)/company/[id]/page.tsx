@@ -23,7 +23,7 @@ export default async function CompanyId(props: any) {
             {company.location}
           </Typography>
           <hr className="mb-10" />
-          <div>{company.description}</div>
+          <div dangerouslySetInnerHTML={{ __html: company.description }} />
         </Grid>
         <Grid item sm={3} md={3}>
           <CardMedia
@@ -35,7 +35,7 @@ export default async function CompanyId(props: any) {
               borderRadius: 100,
             }}
             className="mx-auto mb-3"
-            image={`${process.env.API}/company/logo/${company.id}`}
+            image={`/logos/${company.filename}`}
           />
 
           <Typography
