@@ -2,6 +2,7 @@
 
 import { revalidateTag } from "next/cache";
 import { IAllCompany, IReadAllRole, IReadSkills, IRole } from "@/type";
+import { getJwt } from "@/components/actions/serverActionAll";
 
 export async function fetchAllRole() {
   const fetchAllRole = await fetch(`${process.env.API}/role/read`, {
@@ -15,9 +16,11 @@ export async function fetchAllRole() {
 }
 
 export async function fetchCreateRole(data: any) {
+  const jwt = await getJwt();
   const res = await fetch(`${process.env.API}/role/create`, {
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${jwt?.value}`,
     },
     method: "POST",
     body: JSON.stringify(data),
@@ -29,9 +32,12 @@ export async function fetchCreateRole(data: any) {
 }
 
 export async function fetchUpdateRole(data: any, id: any) {
+  const jwt = await getJwt();
+
   const res = await fetch(`http://localhost:3001/api/role/update/${id}`, {
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${jwt?.value}`,
     },
     method: "PATCH",
     body: JSON.stringify(data),
@@ -43,8 +49,13 @@ export async function fetchUpdateRole(data: any, id: any) {
 }
 
 export const deleteRole = async (id: number) => {
+  const jwt = await getJwt();
+
   await fetch(`http://localhost:3001/api/role/delete/${id}`, {
     method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${jwt?.value}`,
+    },
   });
 
   revalidateTag("roles");
@@ -60,12 +71,15 @@ export const fetchRoleById = async (id: number) => {
 };
 
 export const fetchApiForRole = async () => {
+  const jwt = await getJwt();
+
   const data = await fetch(`http://localhost:3001/api/api/readForRole`, {
     method: "GET",
+    headers: {
+      Authorization: `Bearer ${jwt?.value}`,
+    },
   });
   const apis = await data.json();
-
+  console.log(apis)
   return apis;
 };
-
-

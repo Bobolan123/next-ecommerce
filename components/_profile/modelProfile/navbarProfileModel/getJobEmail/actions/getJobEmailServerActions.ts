@@ -1,6 +1,6 @@
 "use server";
 
-import { endcodeJWT } from "@/components/actions/serverActionAll";
+import { endcodeJWT, getJwt } from "@/components/actions/serverActionAll";
 import { ISkill, IUser } from "@/type";
 
 interface IResponse {
@@ -26,12 +26,15 @@ export const getAllSkills = async (): Promise<ISkill[]> => {
 
 export const getEmail = async (data: number[]): Promise<any> => {
   try {
+    const jwt = await getJwt();
+
     const user = await endcodeJWT();
-    let newData = { ids:data, email: user.email };
+    let newData = { ids: data, email: user.email };
     const res = await fetch(`http://localhost:3001/api/skills/getEmail`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt?.value}`,
       },
       body: JSON.stringify(newData),
     });
@@ -47,11 +50,14 @@ export const getEmail = async (data: number[]): Promise<any> => {
 
 export const getJobBySkills = async (data: any): Promise<IResponse> => {
   try {
+    const jwt = await getJwt();
+
     const res = await fetch(
       `${process.env.API}/user/updatePassword/${data.id}`,
       {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${jwt?.value}`,
         },
         method: "PATCH",
         body: JSON.stringify(data),

@@ -10,7 +10,7 @@ export async function fetchCreateCompany(data: any) {
     method: "POST",
     body: data,
     headers: {
-      Authorization: `Bearer ${jwt}`,
+      Authorization: `Bearer ${jwt?.value}`,
     },
   });
 
@@ -21,9 +21,14 @@ export async function fetchCreateCompany(data: any) {
 }
 
 export async function fetchUpdateCompany(data: any, id: any) {
+  const jwt = await getJwt();
+
   const res = await fetch(`${process.env.API}/company/update/${id}`, {
     method: "PATCH",
     body: data,
+    headers: {
+      Authorization: `Bearer ${jwt?.value}`,
+    },
   });
 
   revalidateTag("list-companies");
@@ -33,8 +38,13 @@ export async function fetchUpdateCompany(data: any, id: any) {
 }
 
 export const deleteCompany = async (id: number) => {
+  const jwt = await getJwt();
+
   await fetch(`http://localhost:3001/api/company/delete/${id}`, {
     method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${jwt?.value}`,
+    },
   });
 
   revalidateTag("list-companies");

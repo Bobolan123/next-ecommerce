@@ -15,7 +15,7 @@ import Badge from "@mui/material/Badge";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { mainListItems } from "./listItems";
+import { VerticalNavBarAdmin } from "./verticalNavBarAdmin";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -138,9 +138,12 @@ export default function Layout({
             </Toolbar>
             <Divider />
             <List component="nav">
-              {mainListItems}
+
+              <VerticalNavBarAdmin/>
+
               <Divider sx={{ my: 1 }} />
               {/* {secondaryListItems} */}
+
             </List>
           </Drawer>
           <Box

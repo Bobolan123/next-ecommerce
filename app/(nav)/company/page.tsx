@@ -3,12 +3,15 @@ import PaginationCompanyMUI from "@/components/_company/paginationCompany";
 import { IAllCompany } from "@/components/_company/type";
 import { Grid, Typography, Pagination, Stack } from "@mui/material";
 import Image from "next/image";
+import { getJwt } from "@/components/actions/serverActionAll";
 
 export default async function Company({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
+  const jwt =  await getJwt()
+  
   const fetchAllCompanies = await fetch(
     `${process.env.API}/company/readCompanies`,
     {

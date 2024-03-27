@@ -2,31 +2,30 @@
 
 import { revalidateTag } from "next/cache";
 import { IAllCompany, IReadResumes, IReadSkills, IResume } from "@/type";
-
+import { getJwt } from "@/components/actions/serverActionAll";
 
 export async function fetchAllResumes() {
-  const fetchAllResumes = await fetch(
-    `${process.env.API}/resume/read`,
-    {
-      method: "GET",
-      next: { tags: ["list-resumes"] },
-      cache: 'no-store'
-    }
-  );
+  const fetchAllResumes = await fetch(`${process.env.API}/resume/read`, {
+    method: "GET",
+    next: { tags: ["list-resumes"] },
+    cache: "no-store",
+  });
   let fetchResumes: IReadResumes = await fetchAllResumes.json();
   const companies = fetchResumes.data;
-  return companies
-} 
+  return companies;
+}
 
 export async function fetchCreateResume(data: any) {
-    const res = await fetch(`${process.env.API}/resume/create`, {
+  const jwt = await getJwt();
+
+  const res = await fetch(`${process.env.API}/resume/create`, {
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${jwt?.value}`,
     },
     method: "POST",
     body: JSON.stringify(data),
   });
-
 
   revalidateTag("resumes");
   const newResume = await res.json();
@@ -34,10 +33,12 @@ export async function fetchCreateResume(data: any) {
 }
 
 export async function fetchUpdateResume(data: any, id: any) {
+  const jwt = await getJwt();
 
   const res = await fetch(`${process.env.API}/resume/update/${id}`, {
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${jwt?.value}`,
     },
     method: "PATCH",
     body: JSON.stringify(data),
@@ -49,18 +50,23 @@ export async function fetchUpdateResume(data: any, id: any) {
 }
 
 export const deleteResume = async (id: number) => {
+  const jwt = await getJwt();
+
   await fetch(`http://localhost:3001/api/resume/delete/${id}`, {
     method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${jwt?.value}`,
+    },
   });
 
-  revalidateTag('resumes')
+  revalidateTag("resumes");
 };
 
 export const fetchResumeById = async (id: number) => {
   const data = await fetch(`http://localhost:3001/api/resume/read/${id}`, {
     method: "GET",
   });
-  const resume = await data.json()
-  
-  return resume.data
+  const resume = await data.json();
+
+  return resume.data;
 };

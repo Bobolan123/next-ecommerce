@@ -18,8 +18,9 @@ export default async function Dashboard() {
     headers: {
       Authorization: `Bearer ${jwt?.value}`,
     },
-  });
+  }); 
   const user: IJwt = await res.json();
+  console.log(user)
   if (user?.role !== "admin" && user?.role !== "hr") {
     redirect("/")
   }

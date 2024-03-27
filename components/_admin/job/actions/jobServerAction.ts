@@ -2,6 +2,7 @@
 
 import { revalidateTag } from "next/cache";
 import { IAllCompany, IAllJob, IReadSkills, IUpdateJob } from "@/type";
+import { getJwt } from "@/components/actions/serverActionAll";
 
 export async function fetchAllSkill() {
   const fetchAllSkills = await fetch(`${process.env.API}/skills/read`, {
@@ -27,9 +28,11 @@ export async function fetchAllCompanies() {
 }
 
 export async function fetchCreateJob(data: any) {
+  const jwt = await getJwt();
   const res = await fetch(`${process.env.API}/job/create`, {
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${jwt?.value}`,
     },
     method: "POST",
     body: JSON.stringify(data),
@@ -41,9 +44,11 @@ export async function fetchCreateJob(data: any) {
 }
 
 export async function fetchUpdateJob(data: any, id: any) {
+  const jwt = await getJwt();
   const res = await fetch(`${process.env.API}/job/update/${id}`, {
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${jwt?.value}`,
     },
     method: "PATCH",
     body: JSON.stringify(data),
@@ -55,8 +60,12 @@ export async function fetchUpdateJob(data: any, id: any) {
 }
 
 export const deleteJob = async (id: number) => {
+  const jwt = await getJwt();
   await fetch(`http://localhost:3001/api/job/delete/${id}`, {
     method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${jwt?.value}`,
+    },
   });
 
   revalidateTag("jobs");

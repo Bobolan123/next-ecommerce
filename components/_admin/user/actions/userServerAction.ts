@@ -2,11 +2,14 @@
 
 import { revalidateTag } from "next/cache";
 import { IAllUser, IUpdateUser } from "@/type";
+import { getJwt } from "@/components/actions/serverActionAll";
 
 export async function fetchCreateUser(data: any) {
+  const jwt = await getJwt();
   const res = await fetch(`${process.env.API}/user/create`, {
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${jwt?.value}`,
     },
     method: "POST",
     body: JSON.stringify(data),
@@ -14,11 +17,11 @@ export async function fetchCreateUser(data: any) {
 
   revalidateTag("users");
   const newUser: IAllUser = await res.json();
+  console.log(newUser);
   return newUser.data;
 }
 
 export async function fetchUpdateUser(data: any, id: any) {
-
   const res = await fetch(`${process.env.API}/user/update/${id}`, {
     headers: {
       "Content-Type": "application/json",
@@ -29,7 +32,6 @@ export async function fetchUpdateUser(data: any, id: any) {
 
   revalidateTag("users");
 
-
   const newUser: IUpdateUser = await res.json();
   return newUser.data;
 }
@@ -39,14 +41,14 @@ export const deleteUser = async (id: number) => {
     method: "DELETE",
   });
 
-  revalidateTag('users')
+  revalidateTag("users");
 };
 
 export const fetchUserById = async (id: number) => {
   const data = await fetch(`http://localhost:3001/api/user/read/${id}`, {
     method: "GET",
   });
-  const user = await data.json()
-  
-  return user.data
+  const user = await data.json();
+
+  return user.data;
 };
