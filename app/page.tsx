@@ -7,6 +7,7 @@ import { Box, Button, Container, TextField, Typography } from "@mui/material";
 export default async function Home() {
   const fetchCompanies = await fetch(`${process.env.API}/company/readTopCompany`, {
     method:"GET",
+    cache: 'no-store'
   })
   const companies = await fetchCompanies.json()
 
