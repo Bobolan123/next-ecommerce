@@ -20,7 +20,6 @@ export default async function Dashboard() {
     },
   }); 
   const user: IJwt = await res.json();
-  console.log(user)
   if (user?.role !== "admin" && user?.role !== "hr") {
     redirect("/")
   }

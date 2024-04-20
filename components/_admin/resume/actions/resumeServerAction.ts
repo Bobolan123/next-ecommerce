@@ -52,14 +52,16 @@ export async function fetchUpdateResume(data: any, id: any) {
 export const deleteResume = async (id: number) => {
   const jwt = await getJwt();
 
-  await fetch(`http://localhost:3001/api/resume/delete/${id}`, {
+  const res = await fetch(`http://localhost:3001/api/resume/delete/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${jwt?.value}`,
     },
   });
+  const response = await res.json();
 
   revalidateTag("resumes");
+  return response;
 };
 
 export const fetchResumeById = async (id: number) => {

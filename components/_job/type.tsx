@@ -7,6 +7,7 @@ export interface ICompany {
         data: number[];
     };
     location: string;
+    filename:string
 }
 
 export interface IJob {

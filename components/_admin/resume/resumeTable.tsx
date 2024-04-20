@@ -12,6 +12,8 @@ import { IResume } from "@/type";
 import ResumeModel from "./resumeModel";
 import { Button } from "@mui/material";
 import { toast } from "react-toastify";
+import { deleteResume } from "./actions/resumeServerAction";
+import { MdDeleteOutline } from "react-icons/md";
 
 interface IResumeProps {
   resumes: IResume[];
@@ -22,10 +24,18 @@ export default function ResumeTable(props: IResumeProps) {
     if (cvFile) {
       window.open(`http://localhost:8080/asset/resumes/${cvFile}`, "_blank");
     } else {
-      toast.error("Not found pdf CV")      
+      toast.error("Not found pdf CV");
     }
   };
 
+  const handleDelete = async (id: number) => {
+    const res = await deleteResume(id);
+    if (res.status === 200) {
+      toast.success(res.message);
+    } else {
+      toast.error(res.message);
+    }
+  };
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -56,12 +66,17 @@ export default function ResumeTable(props: IResumeProps) {
                 </Button>
               </TableCell>
               <TableCell align="left">{resume.status}</TableCell>
-              <TableCell align="left">{resume.job.name}</TableCell>
-              <TableCell align="left">{resume.job.company.name}</TableCell>
+              <TableCell align="left">{resume?.job?.name}</TableCell>
+              <TableCell align="left">{resume?.job?.company?.name}</TableCell>
               <TableCell align="left">{resume.created_at}</TableCell>
               <TableCell align="left">{resume.updated_at}</TableCell>
               <TableCell align="left">
                 <ResumeModel resume={resume} />
+              </TableCell>
+              <TableCell align="left">
+                <Button onClick={() => handleDelete(resume?.id)}>
+                  <MdDeleteOutline color="red" size={20} />{" "}
+                </Button>{" "}
               </TableCell>
             </TableRow>
           ))}

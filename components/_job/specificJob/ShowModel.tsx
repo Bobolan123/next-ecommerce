@@ -41,25 +41,21 @@ const ShowModel: React.FC<ShowModelProps> = (props) => {
   const handleOk = async () => {
     try {
       const formData = new FormData();
+
       if (uploadedFile) {
         formData.append("cvFile", uploadedFile);
-
-        const resumeData = {
-          status: "pending",
-          user: {
-            id: idUser,
-          },
-          job: {
-            id: job.id,
-          },
-        };
-
-        const res = await fetchCreateResume(resumeData, formData);
-        if (res.statusCode === 200) {
-          toast.success(res.message);
+        formData.append("status", "pending");
+        formData.append("user", idUser.toString());
+        formData.append("job", job.id.toString());
+        const response = await fetchCreateResume(formData);
+        if (response) {
+          const data = await response.json();
+          toast.success(data.message);
         } else {
-          throw new Error(res.message);
+          throw new Error("Failed to create resume");
         }
+      } else {
+        toast.error("Resume is required");
       }
     } catch (error: any) {
       toast.error("Error updating resume: " + error.message);

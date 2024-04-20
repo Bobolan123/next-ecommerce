@@ -48,7 +48,7 @@ export default async function SpecificJob(props: any) {
             {job.name}
           </Typography>
 
-          <ApplyButton job = {job}/>
+          <ApplyButton job={job} />
 
           <Typography variant="subtitle1">
             <CiDollar className="inline mr-1" />
@@ -70,7 +70,7 @@ export default async function SpecificJob(props: any) {
           >
             Description
           </Typography>
-          <div>{job.description}</div>
+          <div dangerouslySetInnerHTML={{ __html: job.description }} />
         </Grid>
         <Grid item sm={3} md={3}>
           <CardMedia
@@ -82,7 +82,7 @@ export default async function SpecificJob(props: any) {
               borderRadius: 100,
             }}
             className="mx-auto mb-3"
-            image={`${process.env.API}/company/logo/${job.company.id}`}
+            image={`/logos/${job.company.filename}`}
           />
 
           <Typography

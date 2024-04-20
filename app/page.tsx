@@ -12,7 +12,8 @@ export default async function Home() {
   const companies = await fetchCompanies.json()
 
   const fetchJobs = await fetch(`${process.env.API}/job/readAllJob/`, {
-    method:"GET"
+    method:"GET",
+    cache: 'no-store' 
   })
   let jobs = await fetchJobs.json()
   

@@ -19,6 +19,8 @@ import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { deleteCookie, getCookie } from "cookies-next";
+import { redirect } from "next/navigation";
+import { navigateAdmin } from "./actionNavbar";
 
 const NoSSR = dynamic(() => import("./_profile/modelProfile/ModelProfile"), {
   ssr: false,
@@ -65,6 +67,7 @@ function ResponsiveAppBar() {
     }
 
     if (titleProfile === "Dashboard") {
+      navigateAdmin();
     }
     if (titleProfile === "Logout") {
       deleteCookie("jwt");

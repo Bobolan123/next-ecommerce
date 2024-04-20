@@ -46,8 +46,10 @@ export default function RenderJobPagination(props: any) {
           borderRadius: 100,
           marginLeft: 2,
         }}
-        image={logo}
-      />
+        // image={logo}
+        image={`/logos/${job.company.filename}`}
+
+/>
       <CardContent sx={{ flex: 1 }}>
         <Typography component="h2" variant="h5">
           {job.name}

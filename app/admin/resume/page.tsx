@@ -1,10 +1,8 @@
 import * as React from "react";
-import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { Button, Container, TextField } from "@mui/material";
-import { useState } from "react";
 import dynamic from "next/dynamic";
 import ResumeTable from "@/components/_admin/resume/resumeTable";
 import { fetchAllResumes } from "@/components/_admin/resume/actions/resumeServerAction";
@@ -58,7 +56,7 @@ export default async function Resume() {
               <Typography variant="h5" sx={{ fontWeight: "bold" }}>
                 List of Resumes
               </Typography>
-            </div>
+            </div> 
             <ResumeTable resumes={resumes}/>
           </Paper>
         </Grid>

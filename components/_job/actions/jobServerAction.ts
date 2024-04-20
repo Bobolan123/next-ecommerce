@@ -1,3 +1,5 @@
+import { getJwt } from "@/components/actions/serverActionAll";
+
 interface IJWT {
   id: number;
   email: string;
@@ -14,20 +16,21 @@ export const endcodeJwt = async (jwt: string) => {
   return user;
 };
 
-export async function fetchCreateResume(data: any, cvFile: any) {
+export async function fetchCreateResume(data: any) {
   try {
-    const res = await fetch(`http://localhost:3001/api/resume/create`, {
+    const jwt = await getJwt();
+
+    const res = await fetch(`http://localhost:3001/api/resume/createCV`, {
       headers: {
-        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt?.value}`,
       },
       method: "POST",
-      body: JSON.stringify(data),
+      body: data,
     });
 
     const newResume = await res.json();
     if (newResume.statusCode === 200) {
-      const updatedResume = await uploadCV(newResume.data.id, cvFile);
-      return updatedResume;
+      return newResume;
     } else {
       throw new Error(`Error creating resume: ${newResume.message}`);
     }
@@ -36,18 +39,3 @@ export async function fetchCreateResume(data: any, cvFile: any) {
     throw error; // rethrow the error for the caller to handle
   }
 }
-
-export const uploadCV = async (id: any, cvFile: any) => {
-  try {
-    const res = await fetch(`http://localhost:3001/api/resume/uploadCVFile/${id}`, {
-      method: "PATCH",
-      body: cvFile,
-    });
-    const data = await res.json();
-    return data;
-  } catch (error) {
-    console.error("Error uploading CV file:", error);
-    throw error; // rethrow the error for the caller to handle
-  }
-};
-

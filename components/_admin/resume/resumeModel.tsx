@@ -94,9 +94,11 @@ const ResumeModel: React.FC<IModelResumeProps> = (props: IModelResumeProps) => {
               </TableRow>
               <TableRow key="email">
                 <TableCell component="th" scope="row">
-                  {resume.job.name}
+                  {resume?.job?.name}
                 </TableCell>
-                <TableCell align="center">{resume.job.company.name}</TableCell>
+                <TableCell align="center">
+                  {resume?.job?.company?.name}
+                </TableCell> 
               </TableRow>
               <TableRow key="email" className="bg-slate-200">
                 <TableCell component="th" scope="row">

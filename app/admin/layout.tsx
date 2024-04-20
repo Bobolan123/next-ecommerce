@@ -18,6 +18,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import { VerticalNavBarAdmin } from "./verticalNavBarAdmin";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Link from "next/link";
 
 const drawerWidth: number = 240;
 
@@ -128,22 +129,25 @@ export default function Layout({
               sx={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "flex-end",
+                justifyContent: "space-between",
                 px: [1],
               }}
             >
+              <Link href="/">
+                <Typography variant="h5" gutterBottom  className="ml-3">
+                  Logan
+                </Typography>
+              </Link>
               <IconButton onClick={toggleDrawer}>
                 <ChevronLeftIcon />
               </IconButton>
             </Toolbar>
             <Divider />
             <List component="nav">
-
-              <VerticalNavBarAdmin/>
+              <VerticalNavBarAdmin />
 
               <Divider sx={{ my: 1 }} />
               {/* {secondaryListItems} */}
-
             </List>
           </Drawer>
           <Box

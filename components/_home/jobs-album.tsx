@@ -35,7 +35,8 @@ export default function JobsAlbum(props: any) {
                       borderRadius: 100,
                       marginLeft: 2,
                     }}
-                    image={`${process.env.API}/company/logo/${job.company.id}`}
+                    image={`/logos/${job.company.filename}`}  
+
                   />
                   <CardContent sx={{ flex: 1 }}>
                     <Typography component="h2" variant="h5">

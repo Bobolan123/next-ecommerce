@@ -17,10 +17,11 @@ interface DataType {
 
 const handleOpenPdf = (cvFile: string) => {
   if (cvFile) {
-    window.open(`http://localhost:8080/asset/resumes/${cvFile}`, "_blank");
+    window.open(`http://localhost:8080/${cvFile}`, "_blank");
   } else {
     toast.error("Not found pdf CV");
   }
+  //http-server -p 8080
 };
 
 const columns: TableProps<DataType>["columns"] = [

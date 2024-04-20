@@ -7,14 +7,7 @@ export interface IJob {
   status: string;
   salary: number;
   timeDifference:string
-  company: {
-    id:number,
-    logo: {
-        type: string,
-        data: number[],
-    },
-    location: string
-  }
+  company: ICompany
 }
 
 export interface ICompany {

@@ -19,6 +19,7 @@ export default async function Job({
 }) {
   const fetchJobs = await fetch(`${process.env.API}/job/readAllJob`, {
     method: "GET",
+    cache: 'no-store'
   });
   let job: IAllJob = await fetchJobs.json();
   const jobs = job.data;

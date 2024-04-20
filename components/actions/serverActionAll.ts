@@ -16,7 +16,7 @@ export const endcodeJWT = async () => {
 };
 
 export const getJwt = async () => {
-  const cookieStore = cookies();
-  const jwt = cookieStore.get("jwt");
-  return jwt
+  const cookieStore = await cookies();
+  const jwt = await cookieStore.get("jwt");
+  return jwt // {name, value: jwt,path}
 }
