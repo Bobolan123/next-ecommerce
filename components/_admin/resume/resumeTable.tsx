@@ -30,7 +30,7 @@ export default function ResumeTable(props: IResumeProps) {
 
   const handleDelete = async (id: number) => {
     const res = await deleteResume(id);
-    if (res.status === 200) {
+    if (res.statusCode === 200) {
       toast.success(res.message);
     } else {
       toast.error(res.message);

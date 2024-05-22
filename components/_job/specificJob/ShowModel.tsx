@@ -48,9 +48,9 @@ const ShowModel: React.FC<ShowModelProps> = (props) => {
         formData.append("user", idUser.toString());
         formData.append("job", job.id.toString());
         const response = await fetchCreateResume(formData);
+
         if (response) {
-          const data = await response.json();
-          toast.success(data.message);
+          toast.success("create successfully");
         } else {
           throw new Error("Failed to create resume");
         }
