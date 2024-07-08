@@ -1,4 +1,4 @@
-import { endcodeJWT } from "@/components/actions/serverActionAll";
+import { endcodeJWT } from "@/lib/actions/serverActionAll";
 import FormChangePassword from "./formChangePassword";
 
 export default async function ChangePassword() {

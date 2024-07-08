@@ -2,7 +2,7 @@
 
 import { revalidateTag } from "next/cache";
 import { IAllCompany, IAllJob, IReadSkills, IUpdateJob } from "@/type";
-import { getJwt } from "@/components/actions/serverActionAll";
+import { getJwt } from "@/lib/actions/serverActionAll";
 
 export async function fetchAllSkill() {
   const fetchAllSkills = await fetch(`${process.env.API}/skills/read`, {

@@ -2,7 +2,7 @@
 
 import { revalidateTag } from "next/cache";
 import { IAllCompany, IReadAllRole, IReadSkills, IRole } from "@/type";
-import { getJwt } from "@/components/actions/serverActionAll";
+import { getJwt } from "@/lib/actions/serverActionAll";
 
 export async function fetchAllRole() {
   const fetchAllRole = await fetch(`${process.env.API}/role/read`, {

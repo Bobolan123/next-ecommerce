@@ -2,7 +2,7 @@
 
 import { revalidateTag } from "next/cache";
 import { IAllUser, IUpdateUser } from "@/type";
-import { getJwt } from "@/components/actions/serverActionAll";
+import { getJwt } from "@/lib/actions/serverActionAll";
 
 export async function fetchCreateUser(data: any) {
   const jwt = await getJwt();

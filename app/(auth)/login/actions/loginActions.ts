@@ -1,20 +1,20 @@
-'use server'
+"use server";
 
-
-interface UserAccount {
-    username: string;
-    password: string;
+interface UserLoginResponse {
+    statusCode: number;
+    message: string;
+    data: UserData;
 }
 
 interface UserData {
     email: string;
     name: string;
     id: number;
+    role: string;
     access_token: string;
-    refresh_token: string;
 }
 
-const loginAuth = async (data: UserAccount) => {
+const loginAuth = async (data: { username: string; password: string }) => {
     const res = await fetch(`${process.env.API}/auth/login`, {
         headers: {
             "Content-Type": "application/json",
@@ -23,13 +23,12 @@ const loginAuth = async (data: UserAccount) => {
         body: JSON.stringify(data),
     });
 
-    if (res.ok) { // Check if the request was successful
-        const jwt: UserData = await res.json();
-        return jwt
+    if (res.ok) {
+        const jwt: UserLoginResponse = await res.json();
+        return jwt.data.access_token;
     } else {
-        // Handle error here if needed
-        console.error('Login request failed');
+        throw new Error("Login request failed");
     }
-}
+};
 
 export { loginAuth };

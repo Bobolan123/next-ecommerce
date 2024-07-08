@@ -1,24 +1,27 @@
 import ResponsiveAppBar from "@/components/Navbar";
+import CityInput from "@/components/_home/cityInput";
 import CompanyAlbum from "@/components/_home/company.album";
 import JobsAlbum from "@/components/_home/jobs-album";
-import { getJwt } from "@/components/actions/serverActionAll";
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 
 export default async function Home() {
-  const fetchCompanies = await fetch(`${process.env.API}/company/readTopCompany`, {
-    method:"GET",
-    cache: 'no-store'
-  })
-  const companies = await fetchCompanies.json()
+  const fetchCompanies = await fetch(
+    `${process.env.API}/company?page=1&limit=4`,
+    {
+      method: "GET",
+      next: { tags: ['companies'] }
+    }
+  );
+  const companies = await fetchCompanies.json();
 
-  const fetchJobs = await fetch(`${process.env.API}/job/readAllJob/`, {
-    method:"GET",
-    cache: 'no-store' 
-  })
-  let jobs = await fetchJobs.json()
-  
+  const fetchJobs = await fetch(`${process.env.API}/job?page=1&limit=4`, {
+    method: "GET",
+    next: { tags: ['jobs'] },
+  });
+  let jobs = await fetchJobs.json();
+
   return (
-    <>  
+    <>
       <ResponsiveAppBar />
       <Container className="mt-5">
         <Typography className="mb-3" variant="h5" sx={{ fontWeight: "bold" }}>
@@ -39,20 +42,17 @@ export default async function Home() {
             variant="outlined"
             size="small"
           />
-          <TextField
-            id="location"
-            label="Location"
-            variant="outlined"
-            size="small"
-          />
+
+          <CityInput />
+          
           <Button color="primary" id="search" variant="contained" size="small">
             Search
           </Button>
         </Box>
         <div className="align-middle">
-          <CompanyAlbum companies = {companies.data}/>
-          <JobsAlbum jobs ={jobs.data}/>
-        </div> 
+          <CompanyAlbum companies={companies.data.companies} />
+          <JobsAlbum jobs={jobs.data.jobs} />
+        </div>
       </Container>
     </>
   );

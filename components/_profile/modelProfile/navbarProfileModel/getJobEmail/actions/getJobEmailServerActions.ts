@@ -1,6 +1,6 @@
 "use server";
 
-import { endcodeJWT, getJwt } from "@/components/actions/serverActionAll";
+import { endcodeJWT, getJwt } from "@/lib/actions/serverActionAll";
 import { ISkill, IUser } from "@/type";
 
 interface IResponse {

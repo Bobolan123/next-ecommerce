@@ -12,7 +12,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import React from "react";
-import { getJwt } from "@/components/actions/serverActionAll";
+import { getJwt } from "@/lib/actions/serverActionAll";
 import { getModule } from "@/components/_admin/navbar/actions/navbarServerActions";
 
 export const VerticalNavBarAdmin = () => {

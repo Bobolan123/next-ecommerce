@@ -1,7 +1,7 @@
 "use server";
 
 import { IAllCompany } from "@/components/_company/type";
-import { getJwt } from "@/components/actions/serverActionAll";
+import { getJwt } from "@/lib/actions/serverActionAll";
 import { revalidateTag } from "next/cache";
 
 export async function fetchCreateCompany(data: any) {

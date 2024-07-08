@@ -1,4 +1,4 @@
-import { getJwt } from "@/components/actions/serverActionAll";
+import { getJwt } from "@/lib/actions/serverActionAll";
 
 interface IJWT {
   id: number;

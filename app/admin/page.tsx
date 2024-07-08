@@ -13,7 +13,7 @@ interface IJwt {
 export default async function Dashboard() {
   const cookieStore = cookies();
   const jwt = cookieStore.get("jwt");
-  const res = await fetch(`${process.env.API}/auth/profile/`, {
+  const res = await fetch(`${process.env.API}/auth/profile`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${jwt?.value}`,

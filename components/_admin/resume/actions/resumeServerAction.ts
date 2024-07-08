@@ -2,7 +2,7 @@
 
 import { revalidateTag } from "next/cache";
 import { IAllCompany, IReadResumes, IReadSkills, IResume } from "@/type";
-import { getJwt } from "@/components/actions/serverActionAll";
+import { getJwt } from "@/lib/actions/serverActionAll";
 
 export async function fetchAllResumes() {
   const fetchAllResumes = await fetch(`${process.env.API}/resume/read`, {

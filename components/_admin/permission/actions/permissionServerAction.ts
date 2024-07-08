@@ -2,7 +2,7 @@
 
 import { revalidateTag } from "next/cache";
 import { IAllCompany, IReadPermission, IReadSkills, IApi } from "@/type";
-import { getJwt } from "@/components/actions/serverActionAll";
+import { getJwt } from "@/lib/actions/serverActionAll";
 
 export async function fetchAllApi() {
   const fetchAllPermission = await fetch(`${process.env.API}/api/read`, {

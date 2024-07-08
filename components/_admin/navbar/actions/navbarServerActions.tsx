@@ -1,6 +1,6 @@
 'use server'
 
-import { getJwt } from "@/components/actions/serverActionAll"
+import { getJwt } from "@/lib/actions/serverActionAll"
 
 export const getModule = async () => {
     const jwt = await getJwt()
