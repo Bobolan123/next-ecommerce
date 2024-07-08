@@ -16,7 +16,7 @@ const JobPaginationMUI = (props:any) => {
 
   return (
     <Pagination
-      count={Math.ceil(props.totalPage / Number(per_page))}
+      count={props.totalPages}
       onChange={(event, pageNumber) => handleChangePage(event, pageNumber)}
       page={Number(page)}
       color="primary"

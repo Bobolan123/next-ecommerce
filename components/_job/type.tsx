@@ -29,7 +29,14 @@ export interface IJob {
 export interface IAllJob {
     statusCode: number;
     message: string;
-    data: IJob[];
+    data: {
+        jobs: IJob[]
+        totalJobs: number
+        totalPages: number
+        page: number
+        limit: number
+    }
+   
 }
 
 

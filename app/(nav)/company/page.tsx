@@ -3,50 +3,47 @@ import PaginationCompanyMUI from "@/components/_company/paginationCompany";
 import { IAllCompany } from "@/components/_company/type";
 import { Grid, Typography, Pagination, Stack } from "@mui/material";
 import Image from "next/image";
-import { getJwt } from "@/lib/actions/serverActionAll";
 
 export default async function Company({
-  searchParams,
+    searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+    searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const jwt =  await getJwt()
-  
-  const fetchAllCompanies = await fetch(
-    `${process.env.API}/company/readCompanies`,
-    {
-      method: "GET",
-      cache: "no-store",
-    }
-  );
-  let fetchCompanies: IAllCompany = await fetchAllCompanies.json();
-  const companies = fetchCompanies.data;
+    const page = searchParams["page"] ?? "1";
+    const per_page = searchParams["per_page"] ?? "3 ";
 
-  const page = searchParams["page"] ?? "1";
-  const per_page = searchParams["per_page"] ?? "2";
+    const fetchAllCompanies = await fetch(
+        `${process.env.API}/company?page=${page}&limit=${per_page}`,
+        {
+            method: "GET",
+            next: { tags: ["companies"] },
+        }
+    );
+    let fetchCompanies: IAllCompany = await fetchAllCompanies.json();
+    const companies = fetchCompanies.data;
 
-  const start = (Number(page) - 1) * Number(per_page);
-  const end = start + Number(per_page);
-
-  const entries = companies.slice(start, end);
-
-  return (
-    <div>
-      <Typography className="mb-3" variant="h4">
-        Top company
-      </Typography>
-      <Grid container spacing={4} justifyContent="center" className="mb-9">
-        {entries.map((entry, index) => (
-          <CompanyPagination company={entry} />
-        ))}
-      </Grid>
-      <Stack alignItems="center">
-        <PaginationCompanyMUI
-          totalPage={companies.length}
-          page={page}
-          per_page={per_page}
-        />
-      </Stack>
-    </div>
-  );
+    return (
+        <div>
+            <Typography className="mb-3" variant="h4">
+                Top company
+            </Typography>
+            <Grid
+                container
+                spacing={4}
+                justifyContent="center"
+                className="mb-9"
+            >
+                {companies.companies.map((company, index) => (
+                    <CompanyPagination company={company} />
+                ))}
+            </Grid>
+            <Stack alignItems="center">
+                <PaginationCompanyMUI
+                    totalPage={companies.totalPages}
+                    page={page}
+                    per_page={per_page}
+                />
+            </Stack>
+        </div>
+    );
 }

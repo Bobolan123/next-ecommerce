@@ -8,12 +8,18 @@ export interface ICompany {
     };
     location: string;
     filename: string;
-    created_at:string;
-    updated_at:string
+    created_at: string;
+    updated_at: string;
 }
 
 export interface IAllCompany {
     statusCode: number;
     message: string;
-    data: ICompany[];
+    data: {
+        companies: ICompany[];
+        totalJobs: number;
+        totalPages: number;
+        page: number;
+        limit: number;
+    };
 }
