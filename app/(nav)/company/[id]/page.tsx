@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import { CardMedia } from "@mui/material";
 import { CiLocationOn } from "react-icons/ci";
 import { IRESCOMPANY } from "@/components/_home/type";
+import { ICompany } from "@/interfaces/company.interface";
 
 export default async function CompanyId(props: any) {
     const { params } = props;

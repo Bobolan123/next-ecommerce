@@ -1,6 +1,6 @@
 "use server";
 
-import { endcodeJWT, getJwt } from "@/lib/actions/serverActionAll";
+import { endcodeJWT, getJwt } from "@/utils/utils";
 import { ISkill, IUser } from "@/type";
 
 interface IResponse {
@@ -34,7 +34,7 @@ export const getEmail = async (data: number[]): Promise<any> => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${jwt?.value}`,
+        Authorization: `Bearer ${jwt}`,
       },
       body: JSON.stringify(newData),
     });
@@ -57,7 +57,7 @@ export const getJobBySkills = async (data: any): Promise<IResponse> => {
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${jwt?.value}`,
+          Authorization: `Bearer ${jwt}`,
         },
         method: "PATCH",
         body: JSON.stringify(data),

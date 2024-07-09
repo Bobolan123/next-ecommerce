@@ -4,6 +4,7 @@ import Paper from "@mui/material/Paper";
 import { Button, Container, TextField } from "@mui/material";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { getJwt } from "@/utils/utils";
 
 interface IJwt {
   id: number;
@@ -11,18 +12,17 @@ interface IJwt {
   role: string;
 }
 export default async function Dashboard() {
-  const cookieStore = cookies();
-  const jwt = cookieStore.get("jwt");
+const jwt = getJwt()
   const res = await fetch(`${process.env.API}/auth/profile`, {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${jwt?.value}`,
+      Authorization: `Bearer ${jwt}`,
     },
   }); 
   const user: IJwt = await res.json();
-  if (user?.role !== "admin" && user?.role !== "hr") {
-    redirect("/")
-  }
+  // if (user?.role !== "admin" && user?.role !== "hr") {
+  //   redirect("/")
+  // }
 
   return (
     <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>

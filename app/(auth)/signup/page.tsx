@@ -18,7 +18,7 @@ import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { IUserRes } from "@/type";
-import { getJwt } from "@/lib/libs";
+import { getJwt } from "@/utils/utils";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();

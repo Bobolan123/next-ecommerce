@@ -18,7 +18,7 @@ import { loginAuth } from "./actions/loginActions";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/navigation";
-import { getJwt } from "@/lib/libs";
+import { getJwt } from "@/utils/utils";
 
 const defaultTheme = createTheme({
     palette: {
@@ -52,7 +52,6 @@ export default function SignIn() {
             };
             try {
                 const jwt = await loginAuth(userAcc);
-                localStorage.setItem("jwt", jwt);
 
                 if (getJwt()) {
                     toast.success("Success");

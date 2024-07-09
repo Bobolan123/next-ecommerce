@@ -2,14 +2,14 @@
 
 import { revalidateTag } from "next/cache";
 import { IAllUser, IUpdateUser } from "@/type";
-import { getJwt } from "@/lib/actions/serverActionAll";
+import { getJwt } from "@/utils/utils";
 
 export async function fetchCreateUser(data: any) {
   const jwt = await getJwt();
   const res = await fetch(`${process.env.API}/user/create`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${jwt?.value}`,
+      Authorization: `Bearer ${jwt}`,
     },
     method: "POST",
     body: JSON.stringify(data),

@@ -2,6 +2,8 @@ import ResponsiveAppBar from "@/components/Navbar";
 import CityInput from "@/components/_home/cityInput";
 import CompanyAlbum from "@/components/_home/company.album";
 import JobsAlbum from "@/components/_home/jobs-album";
+import { IAllCompany } from "@/interfaces/company.interface";
+import { IAllJob } from "@/interfaces/job.interface";
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 
 export default async function Home() {
@@ -12,13 +14,13 @@ export default async function Home() {
       next: { tags: ['companies'] }
     }
   );
-  const companies = await fetchCompanies.json();
+  const companies:IAllCompany = await fetchCompanies.json();
 
   const fetchJobs = await fetch(`${process.env.API}/job?page=1&limit=4`, {
     method: "GET",
     next: { tags: ['jobs'] },
   });
-  let jobs = await fetchJobs.json();
+  let jobs:IAllJob = await fetchJobs.json();
 
   return (
     <>

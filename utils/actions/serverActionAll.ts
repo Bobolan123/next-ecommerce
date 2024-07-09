@@ -8,7 +8,7 @@ export const endcodeJWT = async () => {
   const res = await fetch(`${process.env.API}/auth/profile/`, {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${jwt?.value}`,
+      Authorization: `Bearer ${jwt}`,
     },
   });
   const user = await res.json()

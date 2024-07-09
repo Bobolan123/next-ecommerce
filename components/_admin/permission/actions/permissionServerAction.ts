@@ -2,7 +2,7 @@
 
 import { revalidateTag } from "next/cache";
 import { IAllCompany, IReadPermission, IReadSkills, IApi } from "@/type";
-import { getJwt } from "@/lib/actions/serverActionAll";
+import { getJwt } from "@/utils/utils";
 
 export async function fetchAllApi() {
   const fetchAllPermission = await fetch(`${process.env.API}/api/read`, {
@@ -20,7 +20,7 @@ export async function fetchCreateApi(data: any) {
   const res = await fetch(`${process.env.API}/api/create`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${jwt?.value}`,
+      Authorization: `Bearer ${jwt}`,
     },
     method: "POST",
     body: JSON.stringify(data),
@@ -36,7 +36,7 @@ export async function fetchUpdateApi(data: any, id: any) {
   const res = await fetch(`http://localhost:3001/api/api/update/${id}`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${jwt?.value}`,
+      Authorization: `Bearer ${jwt}`,
     },
     method: "PATCH",
     body: JSON.stringify(data),
@@ -52,7 +52,7 @@ export const deleteApi = async (id: number) => {
   await fetch(`http://localhost:3001/api/api/delete/${id}`, {
     method: "DELETE",
     headers: {
-      Authorization: `Bearer ${jwt?.value}`,
+      Authorization: `Bearer ${jwt}`,
     },
   });
 

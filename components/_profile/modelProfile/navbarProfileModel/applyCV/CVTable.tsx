@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Table } from "antd";
 import type { TableProps } from "antd";
-import { endcodeJWT } from "@/lib/actions/serverActionAll";
+import { endcodeJWT } from "@/utils/utils";
 import { toast } from "react-toastify";
 
 interface DataType {

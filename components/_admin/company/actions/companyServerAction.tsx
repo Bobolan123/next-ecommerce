@@ -1,7 +1,7 @@
 "use server";
 
 import { IAllCompany } from "@/components/_company/type";
-import { getJwt } from "@/lib/actions/serverActionAll";
+import { getJwt } from "@/utils/utils";
 import { revalidateTag } from "next/cache";
 
 export async function fetchCreateCompany(data: any) {
@@ -10,7 +10,7 @@ export async function fetchCreateCompany(data: any) {
     method: "POST",
     body: data,
     headers: {
-      Authorization: `Bearer ${jwt?.value}`,
+      Authorization: `Bearer ${jwt}`,
     },
   });
 
@@ -27,7 +27,7 @@ export async function fetchUpdateCompany(data: any, id: any) {
     method: "PATCH",
     body: data,
     headers: {
-      Authorization: `Bearer ${jwt?.value}`,
+      Authorization: `Bearer ${jwt}`,
     },
   });
 
@@ -43,7 +43,7 @@ export const deleteCompany = async (id: number) => {
   await fetch(`http://localhost:3001/api/company/delete/${id}`, {
     method: "DELETE",
     headers: {
-      Authorization: `Bearer ${jwt?.value}`,
+      Authorization: `Bearer ${jwt}`,
     },
   });
 

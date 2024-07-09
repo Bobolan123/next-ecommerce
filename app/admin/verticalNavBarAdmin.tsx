@@ -12,58 +12,58 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import React from "react";
-import { getJwt } from "@/lib/actions/serverActionAll";
 import { getModule } from "@/components/_admin/navbar/actions/navbarServerActions";
 
 export const VerticalNavBarAdmin = () => {
-  const [modules, setModules] = useState([]);
-  useEffect(() => {
-    const getModuleById = async () => {
-      const fetchModules: any = await getModule();
-      console.log(fetchModules)
-      setModules(fetchModules);
+    const [modules, setModules] = useState([]);
+    useEffect(() => {
+        const getModuleById = async () => {
+            const fetchModules: any = await getModule();
+            setModules(fetchModules);
+        };
+        getModuleById();
+    }, []);
+
+    const moduleMapping: Record<
+        string,
+        { icon: typeof BusinessIcon; label: string }
+    > = {
+        company: { icon: BusinessIcon, label: "Company" },
+        user: { icon: PeopleIcon, label: "User" },
+        job: { icon: WorkIcon, label: "Job" },
+        resume: { icon: ArticleIcon, label: "Resume" },
+        api: { icon: SecurityIcon, label: "Permission" },
+        role: { icon: AccountCircleIcon, label: "Role" },
+        // Add more mappings here as needed
     };
-    getModuleById();
-  }, []);
 
-  const moduleMapping: Record<
-    string,
-    { icon: typeof BusinessIcon; label: string }
-  > = {
-    company: { icon: BusinessIcon, label: "Company" },
-    user: { icon: PeopleIcon, label: "User" },
-    job: { icon: WorkIcon, label: "Job" },
-    resume: { icon: ArticleIcon, label: "Resume" },
-    api: { icon: SecurityIcon, label: "Permission" },
-    role: { icon: AccountCircleIcon, label: "Role" },
-    // Add more mappings here as needed
-  };
+    return (
+        <React.Fragment>
+            {modules.map((module) => {
+                const IconComponent = moduleMapping[module]?.icon;
+                const label = moduleMapping[module]?.label;
 
-  return (
-    <React.Fragment>
-      {modules.map((module) => {
-        const IconComponent = moduleMapping[module]?.icon;
-        const label = moduleMapping[module]?.label;
+                if (!IconComponent || !label) {
+                    // Skip rendering if the module is not recognized
+                    return null;
+                }
 
-        if (!IconComponent || !label) {
-          // Skip rendering if the module is not recognized
-          return null;
-        }
-
-        return (
-          <Link
-            href={`/admin/${module === "api" ? "permission" : module}`}
-            key={module}
-          >
-            <ListItemButton>
-              <ListItemIcon>
-                <IconComponent />
-              </ListItemIcon>
-              <ListItemText primary={label} />
-            </ListItemButton>
-          </Link>
-        );
-      })}
-    </React.Fragment>
-  );
+                return (
+                    <Link
+                        href={`/admin/${
+                            module === "api" ? "permission" : module
+                        }`}
+                        key={module}
+                    >
+                        <ListItemButton>
+                            <ListItemIcon>
+                                <IconComponent />
+                            </ListItemIcon>
+                            <ListItemText primary={label} />
+                        </ListItemButton>
+                    </Link>
+                );
+            })}
+        </React.Fragment>
+    );
 };

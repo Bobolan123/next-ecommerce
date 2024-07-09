@@ -20,7 +20,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { redirect, useRouter } from "next/navigation";
 import { actionLogout, navigateAdmin } from "./actionNavbar";
-import { getJwt } from "@/lib/libs";
+import { getJwt } from "@/utils/utils";
 
 const NoSSR = dynamic(() => import("./_profile/modelProfile/ModelProfile"), {
     ssr: false,
@@ -73,7 +73,6 @@ function ResponsiveAppBar() {
         if (titleProfile === "Logout") {
             actionLogout();
             router.refresh();
-            localStorage.removeItem("jwt");
             setIsLogin(false);
         }
     };
@@ -85,7 +84,7 @@ function ResponsiveAppBar() {
     useEffect(() => {
         if (getJwt()) {
             setIsLogin(true);
-        } else {
+        } else {    
             setIsLogin(false);
         }
     }, []);

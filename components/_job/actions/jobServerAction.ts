@@ -1,4 +1,4 @@
-import { getJwt } from "@/lib/actions/serverActionAll";
+import { getJwt } from "@/utils/utils";
 
 interface IJWT {
   id: number;
@@ -22,7 +22,7 @@ export async function fetchCreateResume(data: any) {
 
     const res = await fetch(`http://localhost:3001/api/resume/createCV`, {
       headers: {
-        Authorization: `Bearer ${jwt?.value}`,
+        Authorization: `Bearer ${jwt}`,
       },
       method: "POST",
       body: data,
