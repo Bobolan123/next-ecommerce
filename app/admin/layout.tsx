@@ -93,7 +93,7 @@ export default function Layout({
           <AppBar position="absolute" open={open}>
             <Toolbar
               sx={{
-                pr: "24px", // keep right padding when drawer closed
+                pr: "24px", 
               }}
             >
               <IconButton

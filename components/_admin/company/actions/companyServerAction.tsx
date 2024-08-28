@@ -1,8 +1,8 @@
 "use server";
 
-import { IAllCompany } from "@/components/_company/type";
 import { getJwt } from "@/utils/utils";
 import { revalidateTag } from "next/cache";
+import { IAllCompany } from "@/interfaces/company.interface";
 
 export async function fetchCreateCompany(data: any) {
   const jwt = await getJwt();

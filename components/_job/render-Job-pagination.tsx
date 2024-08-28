@@ -7,8 +7,8 @@ import {
   Typography,
 } from "@mui/material";
 import { CiLocationOn } from "react-icons/ci";
-import { IJob } from "./type";
 import { useState, useEffect } from "react";
+import { IJob } from "@/interfaces/job.interface";
 
 export default function RenderJobPagination(props: any) {
   const job: IJob = props.job;
@@ -47,7 +47,7 @@ export default function RenderJobPagination(props: any) {
           marginLeft: 2,
         }}
         // image={logo}
-        image={`/logos/${job.company.filename}`}
+        image={`/logos/${job.company}`}
 
 />
       <CardContent sx={{ flex: 1 }}>
